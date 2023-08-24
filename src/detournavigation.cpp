@@ -1,11 +1,11 @@
 #include "detournavigation.h"
-#include <MeshInstance.hpp>
+#include <godot_cpp/classes/mesh_instance3d.hpp>
 #include <EditorNavigationMeshGenerator.hpp>
 #include <NavigationMesh.hpp>
-#include <Mesh.hpp>
-#include <File.hpp>
-#include <Directory.hpp>
-#include <Variant.hpp>
+#include <godot_cpp/classes/mesh.hpp>
+#include <godot_cpp/classes/file_access.hpp>
+#include <godot_cpp/classes/directory.hpp>
+#include <godot_cpp/variant/builtin_types.hpp>
 #include <thread>
 #include <mutex>
 #include <chrono>
@@ -110,7 +110,7 @@ DetourNavigation::initialize(Variant inputMeshInstance, Ref<DetourNavigationPara
     }
 
     // Make sure we got the input we need
-    MeshInstance* meshInstance = Object::cast_to<MeshInstance>(inputMeshInstance.operator Object*());
+    MeshInstance3D* meshInstance = Object::cast_to<MeshInstance3D>(inputMeshInstance.operator Object*());
     if (meshInstance == nullptr)
     {
         ERR_PRINT("Passed inputMesh must be of type Mesh or MeshInstance.");
@@ -491,7 +491,7 @@ DetourNavigation::addBoxObstacle(Vector3 position, Vector3 dimensions, float rot
     return obstacle;
 }
 
-MeshInstance*
+MeshInstance3D*
 DetourNavigation::createDebugMesh(int index, bool drawCacheBounds)
 {
     _navigationMutex->lock();
@@ -518,7 +518,7 @@ DetourNavigation::createDebugMesh(int index, bool drawCacheBounds)
     navMesh->createDebugMesh(_debugDrawer, drawCacheBounds);
 
     // Add the result to the MeshInstance and return it
-    MeshInstance* meshInst = MeshInstance::_new();
+    MeshInstance3D* meshInst = MeshInstance3D::_new();
     meshInst->set_mesh(_debugDrawer->getArrayMesh());
 
     _navigationMutex->unlock();
@@ -536,7 +536,7 @@ DetourNavigation::save(String path, bool compressed)
     }
 
     // Open the file
-    Ref<File> saveFile = File::_new();
+    Ref<FileAccess> saveFile = FileAccess::_new();
     Error result;
     Ref<Directory> dir = Directory::_new();
     result = dir->make_dir_recursive(path.left(path.find_last("/")));
@@ -653,15 +653,15 @@ DetourNavigation::load(String path, bool compressed)
     }
 
     // Load the file
-    Ref<File> saveFile = File::_new();
+    Ref<FileAccess> saveFile = FileAccess::_new();
     Error result;
     if (compressed)
     {
-        result = saveFile->open_compressed(path, File::READ, File::COMPRESSION_ZSTD);
+        result = saveFile->open_compressed(path, FileAccess::READ, FileAccess::COMPRESSION_ZSTD);
     }
     else
     {
-        result = saveFile->open(path, File::READ);
+        result = saveFile->open(path, FileAccess::READ);
     }
     if (result != Error::OK)
     {
@@ -904,7 +904,7 @@ DetourNavigation::getMarkedAreaIDs()
 void
 DetourNavigation::navigationThreadFunction()
 {
-    Godot::print("DTNav: Navigation thread started");
+    UtilityFunctions::print("DTNav: Navigation thread started");
     double lastExecutionTime = 0.0;
     double secondsToSleepPerFrame = 1.0 / _ticksPerSecond;
     int64_t millisecondsToSleep = 0;
@@ -955,5 +955,5 @@ DetourNavigation::navigationThreadFunction()
         lastExecutionTime = timeTaken / 1000.0;
         emit_signal("navigation_tick_done", lastExecutionTime);
     }
-    Godot::print("DTNav: Navigation thread ended");
+    UtilityFunctions::print("DTNav: Navigation thread ended");
 }

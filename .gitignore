@@ -42,3 +42,6 @@ godotdetour.pro.user.9c7fcd9
 build-recastnavigation-Desktop-Release/
 demo/export/
 demo/export_presets.cfg
+
+# JetBrains IDE files
+.idea/

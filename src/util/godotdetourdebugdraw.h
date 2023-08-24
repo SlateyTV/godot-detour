@@ -2,12 +2,10 @@
 #define GODOTDETOURDEBUGDRAW_H
 
 #include "DebugDraw.h"
-#include <Godot.hpp>
-#include <ArrayMesh.hpp>
-#include <Material.hpp>
-#include <SpatialMaterial.hpp>
-#include <SurfaceTool.hpp>
-
+#include <godot_cpp/classes/array_mesh.hpp>
+#include <godot_cpp/classes/material.hpp>
+#include <godot_cpp/classes/standard_material3d.hpp>
+#include <godot_cpp/classes/surface_tool.hpp>
 class GodotDetourDebugDraw : public duDebugDraw
 {
 public:
@@ -54,7 +52,7 @@ public:
 
 private:
     godot::Ref<godot::SurfaceTool>      _surfaceTool;
-    godot::Ref<godot::SpatialMaterial>  _material;
+    godot::Ref<godot::StandardMaterial3D>  _material;
     godot::Ref<godot::ArrayMesh>        _arrayMesh;
 };
 

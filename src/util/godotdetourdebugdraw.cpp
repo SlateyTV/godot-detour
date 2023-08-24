@@ -1,7 +1,7 @@
 #include "godotdetourdebugdraw.h"
-#include <SurfaceTool.hpp>
-#include <Mesh.hpp>
-#include <SpatialMaterial.hpp>
+#include <godot_cpp/classes/surface_tool.hpp>
+#include <godot_cpp/classes/mesh.hpp>
+#include <godot_cpp/classes/standard_material3d.hpp>
 #include "navigationmeshhelpers.h"
 
 using namespace godot;
@@ -16,25 +16,27 @@ godotColorFromDetourColor(unsigned int input)
     float g = (input >> 8) & 0xff;
     float b = (input >> 16) & 0xff;
     float a = (input >> 24) & 0xff;
-//    Godot::print("Input color: {0}", input);
-//    Godot::print("Got color a: {0} {1} {2} {3}", r, g, b, a);
-//    Godot::print("Got color b: {0} {1} {2} {3}", colorf[0], colorf[1], colorf[2], alpha / 255.0f);
+//    UtilityFunctions::print("Input color: {0}", input);
+//    UtilityFunctions::print("Got color a: {0} {1} {2} {3}", r, g, b, a);
+//    UtilityFunctions::print("Got color b: {0} {1} {2} {3}", colorf[0], colorf[1], colorf[2], alpha / 255.0f);
     return Color(r / 255.0f, g / 255.0f, b / 255.0f, alpha / 255.0f);
 }
 
 GodotDetourDebugDraw::GodotDetourDebugDraw()
 {
-    _surfaceTool.instance();
+    _surfaceTool = (Ref<SurfaceTool>)new SurfaceTool();
 
     // Create the material
-    Ref<SpatialMaterial> mat = SpatialMaterial::_new();
-    mat->set_flag(SpatialMaterial::FLAG_UNSHADED, true);
-    mat->set_flag(SpatialMaterial::FLAG_ALBEDO_FROM_VERTEX_COLOR, true);
-    mat->set_flag(SpatialMaterial::FLAG_USE_POINT_SIZE, true);
-    mat->set_flag(SpatialMaterial::FLAG_DISABLE_AMBIENT_LIGHT, true);
-    mat->set_flag(SpatialMaterial::FLAG_DONT_RECEIVE_SHADOWS, true);
-    mat->set_feature(SpatialMaterial::FEATURE_TRANSPARENT, true);
-    mat->set_cull_mode(SpatialMaterial::CULL_DISABLED);
+    Ref<StandardMaterial3D> mat = new StandardMaterial3D();
+    // mat->set_flag(StandardMaterial3D::FLAG_UNSHADED, true);
+	mat->set_shading_mode(StandardMaterial3D::SHADING_MODE_UNSHADED);
+    mat->set_flag(StandardMaterial3D::FLAG_ALBEDO_FROM_VERTEX_COLOR, true);
+    mat->set_flag(StandardMaterial3D::FLAG_USE_POINT_SIZE, true);
+    mat->set_flag(StandardMaterial3D::FLAG_DISABLE_AMBIENT_LIGHT, true);
+    mat->set_flag(StandardMaterial3D::FLAG_DONT_RECEIVE_SHADOWS, true);
+    // mat->set_feature(StandardMaterial3D::FEATURE_TRANSPARENT, true);
+	mat->set_transparency(StandardMaterial3D::TRANSPARENCY_ALPHA);
+    mat->set_cull_mode(StandardMaterial3D::CULL_DISABLED);
 
     _material = mat;
 }
@@ -155,7 +157,7 @@ GodotDetourDebugDraw::begin(duDebugDrawPrimitives prim, float size)
             break;
         case DU_DRAW_LINES:
             _surfaceTool->begin(Mesh::PRIMITIVE_LINES);
-            _material->set_line_width(size * 1.5f);
+            // _material->set_line_width(size * 1.5f);
             break;
         case DU_DRAW_TRIS:
             _surfaceTool->begin(Mesh::PRIMITIVE_TRIANGLES);
@@ -173,30 +175,30 @@ GodotDetourDebugDraw::begin(duDebugDrawPrimitives prim, float size)
 void
 GodotDetourDebugDraw::vertex(const float* pos, unsigned int color)
 {
-    _surfaceTool->add_color(godotColorFromDetourColor(color));
+    _surfaceTool->set_color(godotColorFromDetourColor(color));
     _surfaceTool->add_vertex(Vector3(pos[0], pos[1], pos[2]));
 }
 
 void
 GodotDetourDebugDraw::vertex(const float x, const float y, const float z, unsigned int color)
 {
-    _surfaceTool->add_color(godotColorFromDetourColor(color));
+    _surfaceTool->set_color(godotColorFromDetourColor(color));
     _surfaceTool->add_vertex(Vector3(x, y, z));
 }
 
 void
 GodotDetourDebugDraw::vertex(const float* pos, unsigned int color, const float* uv)
 {
-    _surfaceTool->add_color(godotColorFromDetourColor(color));
-    _surfaceTool->add_uv(Vector2(uv[0], uv[1]));
+    _surfaceTool->set_color(godotColorFromDetourColor(color));
+    _surfaceTool->set_uv(Vector2(uv[0], uv[1]));
     _surfaceTool->add_vertex(Vector3(pos[0], pos[1], pos[2]));
 }
 
 void
 GodotDetourDebugDraw::vertex(const float x, const float y, const float z, unsigned int color, const float u, const float v)
 {
-    _surfaceTool->add_color(godotColorFromDetourColor(color));
-    _surfaceTool->add_uv(Vector2(u, v));
+    _surfaceTool->set_color(godotColorFromDetourColor(color));
+    _surfaceTool->set_uv(Vector2(u, v));
     _surfaceTool->add_vertex(Vector3(x, y, z));
 }
 

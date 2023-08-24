@@ -27,9 +27,9 @@
 #include <ctype.h>
 #include <string.h>
 #include <algorithm>
-#include <MeshDataTool.hpp>
-#include <ArrayMesh.hpp>
-#include <File.hpp>
+#include <godot_cpp/classes/mesh_data_tool.hpp>
+#include <godot_cpp/classes/array_mesh.hpp>
+#include <godot_cpp/classes/file_access.hpp>
 #include "Recast.h"
 #include "detourinputgeometry.h"
 #include "chunkytrimesh.h"
@@ -136,7 +136,7 @@ DetourInputGeometry::~DetourInputGeometry()
 }
 
 bool
-DetourInputGeometry::loadMesh(rcContext* ctx, godot::MeshInstance* inputMesh)
+DetourInputGeometry::loadMesh(rcContext* ctx, godot::MeshInstance3D* inputMesh)
 {
     if (m_mesh)
     {
@@ -177,7 +177,7 @@ DetourInputGeometry::clearData()
 }
 
 bool
-DetourInputGeometry::save(Ref<File> targetFile)
+DetourInputGeometry::save(Ref<FileAccess> targetFile)
 {
     if (m_chunkyMesh == nullptr || m_mesh == nullptr)
     {
@@ -282,7 +282,7 @@ DetourInputGeometry::save(Ref<File> targetFile)
 }
 
 bool
-DetourInputGeometry::load(Ref<File> sourceFile)
+DetourInputGeometry::load(Ref<FileAccess> sourceFile)
 {
     // Load version
     int version = sourceFile->get_16();

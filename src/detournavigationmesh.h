@@ -1,8 +1,8 @@
 #ifndef DETOURNAVIGATIONMESH_H
 #define DETOURNAVIGATIONMESH_H
 
-#include <Godot.hpp>
-#include <Vector2.hpp>
+#include <godot_cpp/variant/builtin_types.hpp>
+#include <godot_cpp/classes/ref_counted.hpp>
 #include <vector>
 #include "detourcrowdagent.h"
 
@@ -22,16 +22,16 @@ struct TileCacheData;
 
 namespace godot
 {
-    class MeshInstance;
+    class MeshInstance3D;
     class DetourObstacle;
-    class File;
+    class FileAccess;
 
     /**
      * @brief Parameters to initialize a DetourNavigationMesh.
      */
-    struct DetourNavigationMeshParameters : public Reference
+    struct DetourNavigationMeshParameters : public RefCounted
     {
-        GODOT_CLASS(DetourNavigationMeshParameters, Reference)
+        GDEXTENSION_CLASS(DetourNavigationMeshParameters, RefCounted)
 
     public:
         /**
@@ -89,17 +89,12 @@ namespace godot
     /**
      * @brief Representation of a single TileMesh and Crowd.
      */
-    class DetourNavigationMesh : public Reference
+    class DetourNavigationMesh : public RefCounted
     {
-        GODOT_CLASS(DetourNavigationMesh, Reference)
+        GDEXTENSION_CLASS(DetourNavigationMesh, RefCounted)
 
     public:
         static void _register_methods();
-
-        /**
-         * @brief Constructor.
-         */
-        DetourNavigationMesh();
 
         /**
          * @brief Destructor.
@@ -125,14 +120,14 @@ namespace godot
          * @param targetFile The file to append data to.
          * @return True if everything worked out, false otherwise.
          */
-        bool save(Ref<godot::File> targetFile);
+        bool save(Ref<godot::FileAccess> targetFile);
 
         /**
          * @brief Loads and initializes the navmesh from the file.
          * @param sourceFile The file to read data from.
          * @return True if everything worked out, false otherwise.
          */
-        bool load(DetourInputGeometry* inputGeom, RecastContext* recastContext, Ref<godot::File> sourceFile);
+        bool load(DetourInputGeometry* inputGeom, RecastContext* recastContext, Ref<godot::FileAccess> sourceFile);
 
         /**
          * @brief Rebuilds all tiles that have changed (by marking areas).

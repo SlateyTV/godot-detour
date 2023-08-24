@@ -1,7 +1,8 @@
 #include "detournavigationmesh.h"
 #include <DetourTileCache.h>
-#include <SurfaceTool.hpp>
-#include <File.hpp>
+#include <godot_cpp/classes/surface_tool.hpp>
+#include <godot_cpp/classes/file_access.hpp>
+#include <godot_cpp/variant/utility_functions.hpp>
 #include <Recast.h>
 #include <DetourNavMesh.h>
 #include <DetourNavMeshQuery.h>
@@ -23,21 +24,22 @@ using namespace godot;
 void
 DetourNavigationMeshParameters::_register_methods()
 {
-    register_property<DetourNavigationMeshParameters, Vector2>("cellSize", &DetourNavigationMeshParameters::cellSize, Vector2(0.0f, 0.0f));
-    register_property<DetourNavigationMeshParameters, int>("maxNumAgents", &DetourNavigationMeshParameters::maxNumAgents, 256);
-    register_property<DetourNavigationMeshParameters, float>("maxAgentSlope", &DetourNavigationMeshParameters::maxAgentSlope, 0.0f);
-    register_property<DetourNavigationMeshParameters, float>("maxAgentHeight", &DetourNavigationMeshParameters::maxAgentHeight, 0.0f);
-    register_property<DetourNavigationMeshParameters, float>("maxAgentClimb", &DetourNavigationMeshParameters::maxAgentClimb, 0.0f);
-    register_property<DetourNavigationMeshParameters, float>("maxAgentRadius", &DetourNavigationMeshParameters::maxAgentRadius, 0.0f);
-    register_property<DetourNavigationMeshParameters, float>("maxEdgeLength", &DetourNavigationMeshParameters::maxEdgeLength, 0.0f);
-    register_property<DetourNavigationMeshParameters, float>("maxSimplificationError", &DetourNavigationMeshParameters::maxSimplificationError, 0.0f);
-    register_property<DetourNavigationMeshParameters, int>("minNumCellsPerIsland", &DetourNavigationMeshParameters::minNumCellsPerIsland, 0);
-    register_property<DetourNavigationMeshParameters, int>("minCellSpanCount", &DetourNavigationMeshParameters::minCellSpanCount, 0);
-    register_property<DetourNavigationMeshParameters, int>("maxVertsPerPoly", &DetourNavigationMeshParameters::maxVertsPerPoly, 0);
-    register_property<DetourNavigationMeshParameters, int>("tileSize", &DetourNavigationMeshParameters::tileSize, 0);
-    register_property<DetourNavigationMeshParameters, int>("layersPerTile", &DetourNavigationMeshParameters::layersPerTile, 0);
-    register_property<DetourNavigationMeshParameters, float>("detailSampleDistance", &DetourNavigationMeshParameters::detailSampleDistance, 0.0f);
-    register_property<DetourNavigationMeshParameters, float>("detailSampleMaxError", &DetourNavigationMeshParameters::detailSampleMaxError, 0.0f);
+    ///TODO: SlateyDev READD
+//    register_property<DetourNavigationMeshParameters, Vector2>("cellSize", &DetourNavigationMeshParameters::cellSize, Vector2(0.0f, 0.0f));
+//    register_property<DetourNavigationMeshParameters, int>("maxNumAgents", &DetourNavigationMeshParameters::maxNumAgents, 256);
+//    register_property<DetourNavigationMeshParameters, float>("maxAgentSlope", &DetourNavigationMeshParameters::maxAgentSlope, 0.0f);
+//    register_property<DetourNavigationMeshParameters, float>("maxAgentHeight", &DetourNavigationMeshParameters::maxAgentHeight, 0.0f);
+//    register_property<DetourNavigationMeshParameters, float>("maxAgentClimb", &DetourNavigationMeshParameters::maxAgentClimb, 0.0f);
+//    register_property<DetourNavigationMeshParameters, float>("maxAgentRadius", &DetourNavigationMeshParameters::maxAgentRadius, 0.0f);
+//    register_property<DetourNavigationMeshParameters, float>("maxEdgeLength", &DetourNavigationMeshParameters::maxEdgeLength, 0.0f);
+//    register_property<DetourNavigationMeshParameters, float>("maxSimplificationError", &DetourNavigationMeshParameters::maxSimplificationError, 0.0f);
+//    register_property<DetourNavigationMeshParameters, int>("minNumCellsPerIsland", &DetourNavigationMeshParameters::minNumCellsPerIsland, 0);
+//    register_property<DetourNavigationMeshParameters, int>("minCellSpanCount", &DetourNavigationMeshParameters::minCellSpanCount, 0);
+//    register_property<DetourNavigationMeshParameters, int>("maxVertsPerPoly", &DetourNavigationMeshParameters::maxVertsPerPoly, 0);
+//    register_property<DetourNavigationMeshParameters, int>("tileSize", &DetourNavigationMeshParameters::tileSize, 0);
+//    register_property<DetourNavigationMeshParameters, int>("layersPerTile", &DetourNavigationMeshParameters::layersPerTile, 0);
+//    register_property<DetourNavigationMeshParameters, float>("detailSampleDistance", &DetourNavigationMeshParameters::detailSampleDistance, 0.0f);
+//    register_property<DetourNavigationMeshParameters, float>("detailSampleMaxError", &DetourNavigationMeshParameters::detailSampleMaxError, 0.0f);
 }
 
 void
@@ -92,7 +94,7 @@ DetourNavigationMesh::~DetourNavigationMesh()
 bool
 DetourNavigationMesh::initialize(DetourInputGeometry* inputGeom, Ref<DetourNavigationMeshParameters> params, int maxObstacles, RecastContext* recastContext, int index)
 {
-    Godot::print("DTNavMeshInitialize: Initializing navigation mesh");
+    UtilityFunctions::print("DTNavMeshInitialize: Initializing navigation mesh");
 
     _navMeshIndex = index;
     _recastContext = recastContext;
@@ -119,9 +121,9 @@ DetourNavigationMesh::initialize(DetourInputGeometry* inputGeom, Ref<DetourNavig
     const int tw = (gw + ts-1) / ts;
     const int th = (gh + ts-1) / ts;
 
-    Godot::print(String("DTNavMeshInitialize: tile sizes {0} {1} {2}").format(Array::make(ts, tw, th)));
-    Godot::print(String("DTNavMeshInitialize: grid sizes {0} {1}").format(Array::make(gw, gh)));
-    Godot::print(String("DTNavMeshInitialize: bounds {0} {1}").format(Array::make(Vector3(bmin[0], bmin[1], bmin[2]), Vector3(bmax[0], bmax[1], bmax[2]))));
+    UtilityFunctions::print(String("DTNavMeshInitialize: tile sizes {0} {1} {2}").format(Array::make(ts, tw, th)));
+    UtilityFunctions::print(String("DTNavMeshInitialize: grid sizes {0} {1}").format(Array::make(gw, gh)));
+    UtilityFunctions::print(String("DTNavMeshInitialize: bounds {0} {1}").format(Array::make(Vector3(bmin[0], bmin[1], bmin[2]), Vector3(bmax[0], bmax[1], bmax[2]))));
 
     // Generation parameters
     rcConfig& cfg = *_rcConfig;
@@ -160,7 +162,7 @@ DetourNavigationMesh::initialize(DetourInputGeometry* inputGeom, Ref<DetourNavig
     tcparams.maxSimplificationError = para->maxSimplificationError;
     tcparams.maxTiles = tw * th * _layersPerTile;
     tcparams.maxObstacles = _maxObstacles;
-    Godot::print("DTNavMeshInitialize: Assigned parameters...");
+    UtilityFunctions::print("DTNavMeshInitialize: Assigned parameters...");
 
     dtFreeTileCache(_tileCache);
     _tileCache = dtAllocTileCache();
@@ -175,7 +177,7 @@ DetourNavigationMesh::initialize(DetourInputGeometry* inputGeom, Ref<DetourNavig
         ERR_PRINT("DTNavMeshInitialize: Could not init tile cache.");
         return false;
     }
-    Godot::print("DTNavMeshInitialize: Initialized tile cache...");
+    UtilityFunctions::print("DTNavMeshInitialize: Initialized tile cache...");
 
     dtFreeNavMesh(_navMesh);
     _navMesh = dtAllocNavMesh();
@@ -207,7 +209,7 @@ DetourNavigationMesh::initialize(DetourInputGeometry* inputGeom, Ref<DetourNavig
         ERR_PRINT("DTNavMeshInitialize: Could not init Detour navmesh.");
         return false;
     }
-    Godot::print("DTNavMeshInitialize: Initialized Detour navmesh...");
+    UtilityFunctions::print("DTNavMeshInitialize: Initialized Detour navmesh...");
 
     status = _navQuery->init(_navMesh, _navQueryMaxNodes);
     if (dtStatusFailed(status))
@@ -215,7 +217,7 @@ DetourNavigationMesh::initialize(DetourInputGeometry* inputGeom, Ref<DetourNavig
         ERR_PRINT("DTNavMeshInitialize: Could not init Detour navmesh query");
         return false;
     }
-    Godot::print("DTNavMeshInitialize: Initialized Detour navmesh query...");
+    UtilityFunctions::print("DTNavMeshInitialize: Initialized Detour navmesh query...");
 
     // Preprocess tiles
     _recastContext->resetTimers();
@@ -251,7 +253,7 @@ DetourNavigationMesh::initialize(DetourInputGeometry* inputGeom, Ref<DetourNavig
             delete [] tiles;
         }
     }
-    Godot::print("DTNavMeshInitialize: Processed input mesh..");
+    UtilityFunctions::print("DTNavMeshInitialize: Processed input mesh..");
 
     // Build initial meshes
     _recastContext->startTimer(RC_TIMER_TOTAL);
@@ -280,7 +282,7 @@ DetourNavigationMesh::initialize(DetourInputGeometry* inputGeom, Ref<DetourNavig
         if (tile->header)
             navmeshMemUsage += tile->dataSize;
     }
-    Godot::print(String("DTNavMeshInitialize: navmesh memory usage: {0} bytes").format(Array::make(navmeshMemUsage)));
+    UtilityFunctions::print(String("DTNavMeshInitialize: navmesh memory usage: {0} bytes").format(Array::make(navmeshMemUsage)));
 
     // Initialize the crowd
     if (!initializeCrowd())
@@ -293,7 +295,7 @@ DetourNavigationMesh::initialize(DetourInputGeometry* inputGeom, Ref<DetourNavig
 }
 
 bool
-DetourNavigationMesh::save(Ref<File> targetFile)
+DetourNavigationMesh::save(Ref<FileAccess> targetFile)
 {
     // Sanity check
     if (_tileCache == nullptr)
@@ -358,10 +360,9 @@ DetourNavigationMesh::save(Ref<File> targetFile)
         }
 
         targetFile->store_32(tile->dataSize);
-        PoolByteArray array;
+        PackedByteArray array;
         array.resize(tile->dataSize);
-        PoolByteArray::Write writer = array.write();
-        memcpy(writer.ptr(), tile->data, tile->dataSize);
+        memcpy((void *)array.ptr(), tile->data, tile->dataSize);
         targetFile->store_buffer(array);
     }
 
@@ -369,7 +370,7 @@ DetourNavigationMesh::save(Ref<File> targetFile)
 }
 
 bool
-DetourNavigationMesh::load(DetourInputGeometry* inputGeom, RecastContext* recastContext, Ref<File> sourceFile)
+DetourNavigationMesh::load(DetourInputGeometry* inputGeom, RecastContext* recastContext, Ref<FileAccess> sourceFile)
 {
     _inputGeom = inputGeom;
     _recastContext = recastContext;
@@ -512,8 +513,8 @@ DetourNavigationMesh::load(DetourInputGeometry* inputGeom, RecastContext* recast
             }
             unsigned char* data = (unsigned char*)dtAlloc(dataSize, DT_ALLOC_PERM);
             memset(data, 0, dataSize);
-            PoolByteArray array = sourceFile->get_buffer(dataSize);
-            memcpy(data, array.read().ptr(), dataSize);
+            PackedByteArray array = sourceFile->get_buffer(dataSize);
+            memcpy(data, array.ptr(), dataSize);
 
             // Add tile
             dtCompressedTileRef tile = 0;
@@ -1344,7 +1345,7 @@ DetourNavigationMesh::rasterizeTileLayers(const int tileX, const int tileZ, cons
 
         if (!rcRasterizeTriangles(_recastContext, verts, nverts, tris, rc.triareas, ntris, *rc.solid, tcfg.walkableClimb))
         {
-            Godot::print("DTNavMesh::rasterizeTileLayers: RasterizeTriangles returned false");
+            UtilityFunctions::print("DTNavMesh::rasterizeTileLayers: RasterizeTriangles returned false");
             return 0;
         }
     }

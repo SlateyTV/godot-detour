@@ -1,8 +1,8 @@
 #ifndef DETOURNAVIGATION_H
 #define DETOURNAVIGATION_H
 
-#include <Godot.hpp>
-#include <Array.hpp>
+#include <godot_cpp/variant/builtin_types.hpp>
+#include <godot_cpp/classes/ref_counted.hpp>
 #include <vector>
 #include <atomic>
 #include <map>
@@ -28,9 +28,9 @@ namespace godot
     /**
      * @brief Parameters to initialize a DetourNavigation.
      */
-    struct DetourNavigationParameters : public Reference
+    struct DetourNavigationParameters : public RefCounted
     {
-        GODOT_CLASS(DetourNavigationParameters, Reference)
+        GDEXTENSION_CLASS(DetourNavigationParameters, RefCounted)
 
     public:
         /**
@@ -49,17 +49,12 @@ namespace godot
     /**
      * @brief Main class to initialize GodotDetour and interact with it.
      */
-    class DetourNavigation : public Reference
+    class DetourNavigation : public RefCounted
     {
-        GODOT_CLASS(DetourNavigation, Reference)
+        GDEXTENSION_CLASS(DetourNavigation, RefCounted)
 
     public:
         static void _register_methods();
-
-        /**
-         * @brief Constructor.
-         */
-        DetourNavigation();
 
         /**
          * @brief Destructor.

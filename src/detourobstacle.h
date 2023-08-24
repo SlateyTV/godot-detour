@@ -1,9 +1,9 @@
 #ifndef DETOUROBSTACLE_H
 #define DETOUROBSTACLE_H
 
-#include <Godot.hpp>
 #include <map>
 #include <vector>
+#include <godot_cpp/classes/ref_counted.hpp>
 
 class dtTileCache;
 
@@ -18,22 +18,17 @@ enum DetourObstacleType
 
 namespace godot
 {
-    class File;
+    class FileAccess;
 
     /**
      * @brief A single obstacle. Can be moved around or destroyed.
      */
-    class DetourObstacle : public Reference
+    class DetourObstacle : public RefCounted
     {
-        GODOT_CLASS(DetourObstacle, Reference)
+        GDEXTENSION_CLASS(DetourObstacle, RefCounted);
 
     public:
         static void _register_methods();
-
-        /**
-         * @brief Constructor.
-         */
-        DetourObstacle();
 
         /**
          * @brief Destructor.
@@ -60,14 +55,14 @@ namespace godot
          * @param targetFile The file to append data to.
          * @return True if everything worked out, false otherwise.
          */
-        bool save(Ref<File> targetFile);
+        bool save(Ref<FileAccess> targetFile);
 
         /**
          * @brief Loads the obstacle from the file.
          * @param sourceFile The file to read data from.
          * @return True if everything worked out, false otherwise.
          */
-        bool load(Ref<File> sourceFile);
+        bool load(Ref<FileAccess> sourceFile);
 
         /**
          * @brief Create the obstacle using the passed tile cache. Will also remember the reference.

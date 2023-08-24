@@ -1,7 +1,6 @@
 #ifndef RECASTCONTEXT_H
 #define RECASTCONTEXT_H
 
-#include <Godot.hpp>
 #include <Recast.h>
 #include <map>
 

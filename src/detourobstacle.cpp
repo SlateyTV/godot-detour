@@ -1,7 +1,8 @@
 #include "detourobstacle.h"
-#include <CylinderMesh.hpp>
-#include <QuadMesh.hpp>
-#include <File.hpp>
+#include <godot_cpp/core/class_db.hpp>
+#include <godot_cpp/classes/cylinder_mesh.hpp>
+#include <godot_cpp/classes/quad_mesh.hpp>
+#include <godot_cpp/classes/file_access.hpp>
 #include <DetourTileCache.h>
 
 using namespace godot;
@@ -11,11 +12,11 @@ using namespace godot;
 void
 DetourObstacle::_register_methods()
 {
-    register_method("move", &DetourObstacle::move);
-    register_method("destroy", &DetourObstacle::destroy);
+    ClassDB::bind_method(D_METHOD("move"), &DetourObstacle::move);
+    ClassDB::bind_method(D_METHOD("destroy"), &DetourObstacle::destroy);
 
-    register_property<DetourObstacle, Vector3>("position", &DetourObstacle::_position, Vector3(0.0f, 0.0f, 0.0f));
-    register_property<DetourObstacle, Vector3>("dimensions", &DetourObstacle::_dimensions, Vector3(0.0f, 0.0f, 0.0f));
+    ADD_PROPERTY(PropertyInfo(Variant::VECTOR3, "position"), "set_position", "get_position");
+    ADD_PROPERTY(PropertyInfo(Variant::VECTOR3, "dimensions"), "set_dimensions", "get_dimensions");
 }
 
 DetourObstacle::DetourObstacle()
@@ -45,7 +46,7 @@ DetourObstacle::initialize(DetourObstacleType type, const Vector3& position, con
 }
 
 bool
-DetourObstacle::save(Ref<File> targetFile)
+DetourObstacle::save(Ref<FileAccess> targetFile)
 {
     // Version
     targetFile->store_16(OBSTACLE_SAVE_VERSION);
@@ -61,7 +62,7 @@ DetourObstacle::save(Ref<File> targetFile)
 }
 
 bool
-DetourObstacle::load(Ref<File> sourceFile)
+DetourObstacle::load(Ref<FileAccess> sourceFile)
 {
     // Version
     int version = sourceFile->get_16();

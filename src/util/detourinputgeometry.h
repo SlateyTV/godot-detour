@@ -23,9 +23,8 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 
-#include <MeshInstance.hpp>
-#include <Godot.hpp>
-#include <File.hpp>
+#include <godot_cpp/classes/mesh_instance3d.hpp>
+#include <godot_cpp/classes/file_access.hpp>
 #include "chunkytrimesh.h"
 
 using namespace godot;
@@ -82,18 +81,18 @@ public:
     DetourInputGeometry();
     ~DetourInputGeometry();
 
-    bool loadMesh(class rcContext* ctx, godot::MeshInstance* inputMesh);
+    bool loadMesh(class rcContext* ctx, godot::MeshInstance3D* inputMesh);
     void clearData();
 
     /**
      * @brief Save the input geometry data to the file.
      */
-    bool save(Ref<File> targetFile);
+    bool save(Ref<FileAccess> targetFile);
 
     /**
      * @brief Load the input geometry data from the byte array.
      */
-    bool load(Ref<File> sourceFile);
+    bool load(Ref<FileAccess> sourceFile);
 
     /// Method to return static mesh data.
     const MeshDataAccumulator* getMesh() const { return m_mesh; }

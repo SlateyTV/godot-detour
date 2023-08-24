@@ -2,14 +2,14 @@
 #define MESHDATAACCUMULATOR_H
 
 #include <vector>
-#include <ArrayMesh.hpp>
-#include <Transform.hpp>
-#include <MeshInstance.hpp>
-#include <Godot.hpp>
+#include <godot_cpp/classes/array_mesh.hpp>
+#include <godot_cpp/variant/builtin_types.hpp>
+#include <godot_cpp/classes/mesh_instance3d.hpp>
+#include <godot_cpp/classes/file_access.hpp>
 
 namespace godot
 {
-    class File;
+    class FileAccess;
 }
 
 /**
@@ -21,7 +21,7 @@ public:
     /**
      * @brief Constructor.
      */
-    MeshDataAccumulator(godot::MeshInstance* meshInstance);
+    MeshDataAccumulator(godot::MeshInstance3D* meshInstance);
     MeshDataAccumulator();
 
     /**
@@ -57,12 +57,12 @@ public:
     /**
      * @brief Store the mesh to the target file.
      */
-    void save(godot::Ref<godot::File> targetFile);
+    void save(godot::Ref<godot::FileAccess> targetFile);
 
     /**
      * @brief Load the mesh from the source file.
      */
-    bool load(godot::Ref<godot::File> sourceFile);
+    bool load(godot::Ref<godot::FileAccess> sourceFile);
 
 
 private:

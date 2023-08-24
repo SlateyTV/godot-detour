@@ -1,11 +1,11 @@
 #ifndef DETOURCROWDAGENT_H
 #define DETOURCROWDAGENT_H
 
-#include <Godot.hpp>
 #include <vector>
 #include <map>
 #include <atomic>
 #include <chrono>
+#include <godot_cpp/classes/ref_counted.hpp>
 
 class dtCrowdAgent;
 class dtCrowd;
@@ -16,14 +16,14 @@ class DetourInputGeometry;
 namespace godot
 {
     class DetourNavigationMesh;
-    class File;
+    class FileAccess;
 
     /**
      * @brief Parameters to initialize a DetourCrowdAgent.
      */
-    struct DetourCrowdAgentParameters : public Reference
+    struct DetourCrowdAgentParameters : public RefCounted
     {
-        GODOT_CLASS(DetourCrowdAgentParameters, Reference)
+        GDEXTENSION_CLASS(DetourCrowdAgentParameters, RefCounted)
 
     public:
         /**
@@ -70,17 +70,12 @@ namespace godot
     /**
      * @brief A single agent in a crowd.
      */
-    class DetourCrowdAgent : public Reference
+    class DetourCrowdAgent : public RefCounted
     {
-        GODOT_CLASS(DetourCrowdAgent, Reference)
+        GDEXTENSION_CLASS(DetourCrowdAgent, RefCounted);
 
     public:
         static void _register_methods();
-
-        /**
-         * @brief Constructor.
-         */
-        DetourCrowdAgent();
 
         /**
          * @brief Destructor.
@@ -97,21 +92,21 @@ namespace godot
          * @param targetFile The file to append data to.
          * @return True if everything worked out, false otherwise.
          */
-        bool save(Ref<File> targetFile);
+        bool save(Ref<FileAccess> targetFile);
 
         /**
          * @brief Loads the agent from the file.
          * @param sourceFile The file to read data from.
          * @return True if everything worked out, false otherwise.
          */
-        bool load(Ref<File> sourceFile);
+        bool load(Ref<FileAccess> sourceFile);
 
         /**
          * @brief Loads agent parameters from file
          * @param sourceFile The file to read data from.
          * @return True if everything worked out, false otherwise.
          */
-        bool loadParameterValues(Ref<DetourCrowdAgentParameters> params, Ref<File> sourceFile);
+        bool loadParameterValues(Ref<DetourCrowdAgentParameters> params, Ref<FileAccess> sourceFile);
 
         /**
          * @brief Sets this agent's main crowd agent.
