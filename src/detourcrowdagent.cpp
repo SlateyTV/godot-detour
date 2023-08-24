@@ -13,66 +13,73 @@ using namespace godot;
 void
 DetourCrowdAgentParameters::_bind_methods()
 {
-    ///TODO: SlateyDev READD
-//    ClassDB::bind_method(D_METHOD("set_position", "position"), &DetourCrowdAgentParameters::_set_position);
-//    ClassDB::bind_method(D_METHOD("get_position"), &DetourCrowdAgentParameters::_get_position);
-//    ClassDB::bind_method(D_METHOD("set_radius", "radius"), &DetourCrowdAgentParameters::set_radius);
-//    ClassDB::bind_method(D_METHOD("get_radius"), &DetourCrowdAgentParameters::get_radius);
-//    ClassDB::bind_method("set_height", &DetourCrowdAgentParameters::set_height);
-//    ClassDB::bind_method("get_height", &DetourCrowdAgentParameters::get_height);
-//    ClassDB::bind_method("set_max_acceleration", &DetourCrowdAgentParameters::set_maxAcceleration);
-//    ClassDB::bind_method("get_max_acceleration", &DetourCrowdAgentParameters::get_maxAcceleration);
-//    ClassDB::bind_method("set_max_speed", &DetourCrowdAgentParameters::set_maxSpeed);
-//    ClassDB::bind_method("get_max_speed", &DetourCrowdAgentParameters::get_maxSpeed);
-//    ClassDB::bind_method("set_filter_name", &DetourCrowdAgentParameters::set_filterName);
-//    ClassDB::bind_method("get_filter_name", &DetourCrowdAgentParameters::get_filterName);
-//    ClassDB::bind_method("set_anticipate_turns", &DetourCrowdAgentParameters::set_anticipateTurns);
-//    ClassDB::bind_method("get_anticipate_turns", &DetourCrowdAgentParameters::get_anticipateTurns);
-//    ClassDB::bind_method("set_optimize_visibility", &DetourCrowdAgentParameters::set_optimizeVisibility);
-//    ClassDB::bind_method("get_optimize_visibility", &DetourCrowdAgentParameters::get_optimizeVisibility);
-//    ClassDB::bind_method("set_optimize_topology", &DetourCrowdAgentParameters::set_optimizeTopology);
-//    ClassDB::bind_method("get_optimize_topology", &DetourCrowdAgentParameters::get_optimizeTopology);
-//    ClassDB::bind_method("set_avoid_obstacles", &DetourCrowdAgentParameters::set_avoidObstacles);
-//    ClassDB::bind_method("get_avoid_obstacles", &DetourCrowdAgentParameters::get_avoidObstacles);
-//    ClassDB::bind_method("set_avoid_other_agents", &DetourCrowdAgentParameters::set_avoidOtherAgents);
-//    ClassDB::bind_method("get_avoid_other_agents", &DetourCrowdAgentParameters::get_avoidOtherAgents);
-//    ClassDB::bind_method("set_obstacle_avoidance", &DetourCrowdAgentParameters::set_obstacleAvoidance);
-//    ClassDB::bind_method("get_obstacle_avoidance", &DetourCrowdAgentParameters::get_obstacleAvoidance);
-//    ClassDB::bind_method("set_separation_weight", &DetourCrowdAgentParameters::set_separationWeight);
-//    ClassDB::bind_method("get_separation_weight", &DetourCrowdAgentParameters::get_separationWeight);
-//
-//
-//    ADD_PROPERTY(PropertyInfo(Variant::VECTOR3, "position", "set_position", "get_position");
-//    ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "radius", "set_radius", "get_radius");
-//    ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "height", "set_height", "get_height");
-//    ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "max_acceleration", "set_max_acceleration", "get_max_acceleration");
-//    ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "max_speed", "set_max_speed", "get_max_speed");
-//    ADD_PROPERTY(PropertyInfo(Variant::STRING, "filter_name", "set_filter_name", "get_filter_name");
-//    ADD_PROPERTY(PropertyInfo(Variant::BOOL, "anticipate_turns", "set_anticipate_turns", "get_anticipate_turns");
-//    ADD_PROPERTY(PropertyInfo(Variant::BOOL, "optimize_visibility", "set_optimize_visibility", "get_optimize_visibility");
-//    ADD_PROPERTY(PropertyInfo(Variant::BOOL, "optimize_topology", "set_optimize_topology", "get_optimize_topology");
-//    ADD_PROPERTY(PropertyInfo(Variant::BOOL, "avoid_obstacles", "set_avoid_obstacles", "get_avoid_obstacles");
-//    ADD_PROPERTY(PropertyInfo(Variant::BOOL, "avoid_other_agents", "set_avoid_other_agents", "get_avoid_other_agents");
-//    ADD_PROPERTY(PropertyInfo(Variant::INT, "obstacle_avoidance", "set_set_obstacle_avoidance", "get_obstacle_avoidance");
-//    ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "separation_weight", "set_set_separation_weight", "get_separation_weight");
+    ClassDB::bind_method(D_METHOD("set_position", "position"), &DetourCrowdAgentParameters::set_position);
+    ClassDB::bind_method(D_METHOD("get_position"), &DetourCrowdAgentParameters::get_position);
+    ClassDB::bind_method(D_METHOD("set_radius", "radius"), &DetourCrowdAgentParameters::set_radius);
+    ClassDB::bind_method(D_METHOD("get_radius"), &DetourCrowdAgentParameters::get_radius);
+    ClassDB::bind_method(D_METHOD("set_height", "height"), &DetourCrowdAgentParameters::set_height);
+    ClassDB::bind_method(D_METHOD("get_height"), &DetourCrowdAgentParameters::get_height);
+    ClassDB::bind_method(D_METHOD("set_max_acceleration", "acceleration"), &DetourCrowdAgentParameters::set_maxAcceleration);
+    ClassDB::bind_method(D_METHOD("get_max_acceleration"), &DetourCrowdAgentParameters::get_maxAcceleration);
+    ClassDB::bind_method(D_METHOD("set_max_speed", "speed"), &DetourCrowdAgentParameters::set_maxSpeed);
+    ClassDB::bind_method(D_METHOD("get_max_speed"), &DetourCrowdAgentParameters::get_maxSpeed);
+    ClassDB::bind_method(D_METHOD("set_filter_name", "name"), &DetourCrowdAgentParameters::set_filterName);
+    ClassDB::bind_method(D_METHOD("get_filter_name"), &DetourCrowdAgentParameters::get_filterName);
+    ClassDB::bind_method(D_METHOD("set_anticipate_turns", "turns"), &DetourCrowdAgentParameters::set_anticipateTurns);
+    ClassDB::bind_method(D_METHOD("get_anticipate_turns"), &DetourCrowdAgentParameters::get_anticipateTurns);
+    ClassDB::bind_method(D_METHOD("set_optimize_visibility", "optimize"), &DetourCrowdAgentParameters::set_optimizeVisibility);
+    ClassDB::bind_method(D_METHOD("get_optimize_visibility"), &DetourCrowdAgentParameters::get_optimizeVisibility);
+    ClassDB::bind_method(D_METHOD("set_optimize_topology", "optimize"), &DetourCrowdAgentParameters::set_optimizeTopology);
+    ClassDB::bind_method(D_METHOD("get_optimize_topology"), &DetourCrowdAgentParameters::get_optimizeTopology);
+    ClassDB::bind_method(D_METHOD("set_avoid_obstacles", "avoid"), &DetourCrowdAgentParameters::set_avoidObstacles);
+    ClassDB::bind_method(D_METHOD("get_avoid_obstacles"), &DetourCrowdAgentParameters::get_avoidObstacles);
+    ClassDB::bind_method(D_METHOD("set_avoid_other_agents", "avoid"), &DetourCrowdAgentParameters::set_avoidOtherAgents);
+    ClassDB::bind_method(D_METHOD("get_avoid_other_agents"), &DetourCrowdAgentParameters::get_avoidOtherAgents);
+    ClassDB::bind_method(D_METHOD("set_obstacle_avoidance", "avoidance"), &DetourCrowdAgentParameters::set_obstacleAvoidance);
+    ClassDB::bind_method(D_METHOD("get_obstacle_avoidance"), &DetourCrowdAgentParameters::get_obstacleAvoidance);
+    ClassDB::bind_method(D_METHOD("set_separation_weight", "weight"), &DetourCrowdAgentParameters::set_separationWeight);
+    ClassDB::bind_method(D_METHOD("get_separation_weight"), &DetourCrowdAgentParameters::get_separationWeight);
+
+
+    ADD_PROPERTY(PropertyInfo(Variant::VECTOR3, "position"), "set_position", "get_position");
+    ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "radius"), "set_radius", "get_radius");
+    ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "height"), "set_height", "get_height");
+    ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "max_acceleration"), "set_max_acceleration", "get_max_acceleration");
+    ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "max_speed"), "set_max_speed", "get_max_speed");
+    ADD_PROPERTY(PropertyInfo(Variant::STRING, "filter_name"), "set_filter_name", "get_filter_name");
+    ADD_PROPERTY(PropertyInfo(Variant::BOOL, "anticipate_turns"), "set_anticipate_turns", "get_anticipate_turns");
+    ADD_PROPERTY(PropertyInfo(Variant::BOOL, "optimize_visibility"), "set_optimize_visibility", "get_optimize_visibility");
+    ADD_PROPERTY(PropertyInfo(Variant::BOOL, "optimize_topology"), "set_optimize_topology", "get_optimize_topology");
+    ADD_PROPERTY(PropertyInfo(Variant::BOOL, "avoid_obstacles"), "set_avoid_obstacles", "get_avoid_obstacles");
+    ADD_PROPERTY(PropertyInfo(Variant::BOOL, "avoid_other_agents"), "set_avoid_other_agents", "get_avoid_other_agents");
+    ADD_PROPERTY(PropertyInfo(Variant::INT, "obstacle_avoidance"), "set_set_obstacle_avoidance", "get_obstacle_avoidance");
+    ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "separation_weight"), "set_set_separation_weight", "get_separation_weight");
 }
 
 void
 DetourCrowdAgent::_bind_methods()
 {
-    ///TODO: SlateyDev READD
-//    ClassDB::register_method("moveTowards", &DetourCrowdAgent::moveTowards);
-//    ClassDB::register_method("stop", &DetourCrowdAgent::stop);
-//    ClassDB::register_method("getPredictedMovement", &DetourCrowdAgent::getPredictedMovement);
-//
-//    ClassDB::register_property<DetourCrowdAgent, Vector3>("position", &DetourCrowdAgent::_position, Vector3(0.0f, 0.0f, 0.0f));
-//    ClassDB::register_property<DetourCrowdAgent, Vector3>("velocity", &DetourCrowdAgent::_velocity, Vector3(0.0f, 0.0f, 0.0f));
-//    ClassDB::register_property<DetourCrowdAgent, Vector3>("target", &DetourCrowdAgent::_targetPosition, Vector3(0.0f, 0.0f, 0.0f));
-//    ClassDB::register_property<DetourCrowdAgent, bool>("isMoving", &DetourCrowdAgent::_isMoving, false);
-//
-//    ClassDB::register_signal<DetourCrowdAgent>("arrived_at_target", "node", Variant::OBJECT);
-//    ClassDB::register_signal<DetourCrowdAgent>("no_progress", "node", Variant::OBJECT, "distanceLeft", Variant::REAL);
-//    ClassDB::register_signal<DetourCrowdAgent>("no_movement", "node", Variant::OBJECT);
+    ClassDB::bind_method(D_METHOD("move_towards"), &DetourCrowdAgent::moveTowards);
+    ClassDB::bind_method(D_METHOD("stop"), &DetourCrowdAgent::stop);
+    ClassDB::bind_method(D_METHOD("get_predicted_movement"), &DetourCrowdAgent::getPredictedMovement);
+
+    ClassDB::bind_method(D_METHOD("set_position", "position"), &DetourCrowdAgent::set_position);
+    ClassDB::bind_method(D_METHOD("get_position"), &DetourCrowdAgent::get_position);
+    ClassDB::bind_method(D_METHOD("set_velocity", "velocity"), &DetourCrowdAgent::set_velocity);
+    ClassDB::bind_method(D_METHOD("get_velocity"), &DetourCrowdAgent::get_velocity);
+    ClassDB::bind_method(D_METHOD("set_target_position", "position"), &DetourCrowdAgent::set_targetPosition);
+    ClassDB::bind_method(D_METHOD("get_target,position"), &DetourCrowdAgent::get_targetPosition);
+    ClassDB::bind_method(D_METHOD("set_is_moving", "moving"), &DetourCrowdAgent::set_isMoving);
+    ClassDB::bind_method(D_METHOD("get_is_moving"), &DetourCrowdAgent::get_isMoving);
+
+    ADD_PROPERTY(PropertyInfo(Variant::VECTOR3, "position"), "set_position", "get_position");
+    ADD_PROPERTY(PropertyInfo(Variant::VECTOR3, "velocity"), "set_velocity", "get_velocity");
+    ADD_PROPERTY(PropertyInfo(Variant::VECTOR3, "target_position"), "set_target_position", "get_target_position");
+    ADD_PROPERTY(PropertyInfo(Variant::BOOL, "is_moving"), "set_is_moving", "get_is_moving");
+
+    ADD_SIGNAL(MethodInfo("arrived_at_target", PropertyInfo(Variant::OBJECT, "node")));
+    ADD_SIGNAL(MethodInfo("no_progress", PropertyInfo(Variant::OBJECT, "node"), PropertyInfo(Variant::FLOAT, "distance_left")));
+    ADD_SIGNAL(MethodInfo("no_movement", PropertyInfo(Variant::OBJECT, "node")));
 }
 
 DetourCrowdAgent::DetourCrowdAgent()

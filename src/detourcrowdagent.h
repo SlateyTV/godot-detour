@@ -56,6 +56,98 @@ namespace godot
         bool    avoidOtherAgents;   // If this agent should avoid other agents.
         int     obstacleAvoidance;  // How much this agent should avoid obstacles. 0 - 3, with 0 being low and 3 high avoidance.
         float   separationWeight;   // How strongly the other agents should try to avoid this agent (if they have avoidOtherAgents set).
+
+    public:
+        void set_position(Vector3 pos) {
+            position = pos;
+        }
+        Vector3 get_position() {
+            return position;
+        }
+
+        void set_radius(float rad) {
+            radius = rad;
+        }
+        float get_radius() {
+            return radius;
+        }
+
+        void set_height(float val) {
+            height = val;
+        }
+        float get_height() {
+            return height;
+        }
+
+        void set_maxAcceleration(float acceleration) {
+            maxAcceleration = acceleration;
+        }
+        float get_maxAcceleration() {
+            return maxAcceleration;
+        }
+
+        void set_maxSpeed(float speed){
+            maxSpeed = speed;
+        }
+        float get_maxSpeed() {
+            return maxSpeed;
+        }
+
+        void set_filterName(String name) {
+            filterName = name;
+        }
+        String get_filterName() {
+            return filterName;
+        }
+
+        void set_anticipateTurns(bool val) {
+            anticipateTurns = val;
+        }
+        bool get_anticipateTurns() {
+            return anticipateTurns;
+        }
+
+        void set_optimizeVisibility(bool val){
+            optimizeVisibility = val;
+        }
+        bool get_optimizeVisibility(){
+            return optimizeVisibility;
+        }
+
+        void set_optimizeTopology(bool val){
+            optimizeTopology = val;
+        }
+        bool get_optimizeTopology(){
+            return optimizeTopology;
+        }
+
+        void set_avoidObstacles(bool val) {
+            avoidObstacles = val;
+        }
+        bool get_avoidObstacles() {
+            return avoidObstacles;
+        }
+
+        void set_avoidOtherAgents(bool val) {
+            avoidOtherAgents = val;
+        }
+        bool get_avoidOtherAgents() {
+            return avoidOtherAgents;
+        }
+
+        void set_obstacleAvoidance(int val) {
+            obstacleAvoidance = val;
+        }
+        int get_obstacleAvoidance() {
+            return obstacleAvoidance;
+        }
+
+        void set_separationWeight(float val) {
+            separationWeight = val;
+        }
+        float get_separationWeight() {
+            return separationWeight;
+        }
     };
 
     // Different states that an agent can be in
@@ -210,6 +302,35 @@ namespace godot
         float   _movementOverTime;
 
         std::chrono::system_clock::time_point lastUpdateTime;
+
+    public:
+        void set_position(Vector3 position) {
+            _position = position;
+        }
+        Vector3 get_position() {
+            return _position;
+        }
+
+        void set_velocity(Vector3 velocity) {
+            _velocity = velocity;
+        }
+        Vector3 get_velocity() {
+            return _velocity;
+        }
+
+        void set_targetPosition(Vector3 target_position) {
+            _targetPosition = target_position;
+        }
+        Vector3 get_targetPosition() {
+            return _targetPosition;
+        }
+
+        void set_isMoving(bool moving) {
+            _isMoving = moving;
+        }
+        bool get_isMoving() {
+            return _isMoving;
+        }
     };
 
     // INLINE FUNCTIONS

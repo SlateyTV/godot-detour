@@ -58,7 +58,7 @@ DetourNavigation::_bind_methods()
     ClassDB::bind_method(D_METHOD("add_off_mesh_connection"), &DetourNavigation::addOffMeshConnection);
     ClassDB::bind_method(D_METHOD("remove_off_mesh_connection"), &DetourNavigation::removeOffMeshConnection);
 
-//    register_signal<DetourNavigation>("navigation_tick_done", "executionTimeSeconds", Variant::INT);
+    ADD_SIGNAL(MethodInfo("navigation_tick_done", PropertyInfo(Variant::INT, "execution_time_seconds")));
 }
 
 DetourNavigation::DetourNavigation()
