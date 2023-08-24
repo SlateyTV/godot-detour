@@ -31,7 +31,7 @@ namespace godot
      */
     struct DetourNavigationMeshParameters : public RefCounted
     {
-        GDEXTENSION_CLASS(DetourNavigationMeshParameters, RefCounted)
+        GDCLASS(DetourNavigationMeshParameters, RefCounted)
 
     public:
         /**
@@ -39,7 +39,7 @@ namespace godot
          */
         void _init() {}
 
-        static void _register_methods();
+        static void _bind_methods();
 
         // It is important to understand that recast/detour operates on a voxel field internally.
         // The size of a single voxel (often called cell internally) has significant influence on how a navigation mesh is created.
@@ -91,10 +91,15 @@ namespace godot
      */
     class DetourNavigationMesh : public RefCounted
     {
-        GDEXTENSION_CLASS(DetourNavigationMesh, RefCounted)
+        GDCLASS(DetourNavigationMesh, RefCounted)
 
     public:
-        static void _register_methods();
+        static void _bind_methods();
+
+        /**
+         * @brief Destructor.
+         */
+        DetourNavigationMesh();
 
         /**
          * @brief Destructor.

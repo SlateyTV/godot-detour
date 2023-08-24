@@ -25,10 +25,15 @@ namespace godot
      */
     class DetourObstacle : public RefCounted
     {
-        GDEXTENSION_CLASS(DetourObstacle, RefCounted);
+        GDCLASS(DetourObstacle, RefCounted);
 
     public:
-        static void _register_methods();
+        static void _bind_methods();
+
+        /**
+         * @brief Destructor.
+         */
+        DetourObstacle();
 
         /**
          * @brief Destructor.

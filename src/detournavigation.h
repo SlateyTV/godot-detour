@@ -22,7 +22,7 @@ namespace std
 namespace godot
 {
     class DetourObstacle;
-    class MeshInstance;
+    class MeshInstance3D;
     class Material;
 
     /**
@@ -30,7 +30,7 @@ namespace godot
      */
     struct DetourNavigationParameters : public RefCounted
     {
-        GDEXTENSION_CLASS(DetourNavigationParameters, RefCounted)
+        GDCLASS(DetourNavigationParameters, RefCounted)
 
     public:
         /**
@@ -38,7 +38,7 @@ namespace godot
          */
         void _init() {}
 
-        static void _register_methods();
+        static void _bind_methods();
 
         Array navMeshParameters;    // The number of elements in this array determines how many DetourNavigationMeshes there will be.
         int ticksPerSecond;         // How many updates per second the navigation shall do in its thread.
@@ -51,10 +51,15 @@ namespace godot
      */
     class DetourNavigation : public RefCounted
     {
-        GDEXTENSION_CLASS(DetourNavigation, RefCounted)
+        GDCLASS(DetourNavigation, RefCounted)
 
     public:
-        static void _register_methods();
+        static void _bind_methods();
+
+        /**
+         * @brief Destructor.
+         */
+        DetourNavigation();
 
         /**
          * @brief Destructor.
@@ -157,7 +162,7 @@ namespace godot
          * @param index     The index of the navmesh to enable/disable debug drawing for.
          * @return  The MeshInstance holding all the debug meshes.
          */
-        MeshInstance* createDebugMesh(int index, bool drawCacheBounds);
+        MeshInstance3D* createDebugMesh(int index, bool drawCacheBounds);
 
         /**
          * @brief Saves the current state of the navigation, including all marked areas, temp obstacles and agents.

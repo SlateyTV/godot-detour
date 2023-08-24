@@ -35,7 +35,7 @@ extern "C" GDExtensionBool GDE_EXPORT godot_detour_init(GDExtensionInterfaceGetP
 
     init_obj.register_initializer(initialize_godot_detour_module);
     init_obj.register_terminator(uninitialize_godot_detour_module);
-    init_obj.set_minimum_library_initialization_level(MODULE_INITIALIZED_LEVEL_SCENE);
+    init_obj.set_minimum_library_initialization_level(MODULE_INITIALIZATION_LEVEL_SCENE);
 
     return init_obj.init();
 }

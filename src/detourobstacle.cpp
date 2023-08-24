@@ -10,7 +10,7 @@ using namespace godot;
 #define OBSTACLE_SAVE_VERSION 1
 
 void
-DetourObstacle::_register_methods()
+DetourObstacle::_bind_methods()
 {
     ClassDB::bind_method(D_METHOD("move"), &DetourObstacle::move);
     ClassDB::bind_method(D_METHOD("destroy"), &DetourObstacle::destroy);

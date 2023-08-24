@@ -11,7 +11,7 @@ using namespace godot;
 #define AGENT_SAVE_VERSION 1
 
 void
-DetourCrowdAgentParameters::_register_methods()
+DetourCrowdAgentParameters::_bind_methods()
 {
     ///TODO: SlateyDev READD
 //    ClassDB::bind_method(D_METHOD("set_position", "position"), &DetourCrowdAgentParameters::_set_position);
@@ -58,7 +58,7 @@ DetourCrowdAgentParameters::_register_methods()
 }
 
 void
-DetourCrowdAgent::_register_methods()
+DetourCrowdAgent::_bind_methods()
 {
     ///TODO: SlateyDev READD
 //    ClassDB::register_method("moveTowards", &DetourCrowdAgent::moveTowards);

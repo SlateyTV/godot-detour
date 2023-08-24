@@ -1,11 +1,11 @@
 #include "detournavigation.h"
 #include <godot_cpp/classes/mesh_instance3d.hpp>
-#include <EditorNavigationMeshGenerator.hpp>
-#include <NavigationMesh.hpp>
+#include <godot_cpp/classes/navigation_mesh.hpp>
 #include <godot_cpp/classes/mesh.hpp>
 #include <godot_cpp/classes/file_access.hpp>
-#include <godot_cpp/classes/directory.hpp>
+#include <godot_cpp/classes/dir_access.hpp>
 #include <godot_cpp/variant/builtin_types.hpp>
+#include <godot_cpp/variant/utility_functions.hpp>
 #include <thread>
 #include <mutex>
 #include <chrono>
@@ -22,36 +22,36 @@ using namespace godot;
 #define SAVE_DATA_VERSION 1
 
 void
-DetourNavigationParameters::_register_methods()
+DetourNavigationParameters::_bind_methods()
 {
-    register_property<DetourNavigationParameters, Array>("navMeshParameters", &DetourNavigationParameters::navMeshParameters, Array());
-    register_property<DetourNavigationParameters, int>("ticksPerSecond", &DetourNavigationParameters::ticksPerSecond, 60);
-    register_property<DetourNavigationParameters, int>("maxObstacles", &DetourNavigationParameters::maxObstacles, 256);
+//    register_property<DetourNavigationParameters, Array>("navMeshParameters", &DetourNavigationParameters::navMeshParameters, Array());
+//    register_property<DetourNavigationParameters, int>("ticksPerSecond", &DetourNavigationParameters::ticksPerSecond, 60);
+//    register_property<DetourNavigationParameters, int>("maxObstacles", &DetourNavigationParameters::maxObstacles, 256);
 }
 
 void
-DetourNavigation::_register_methods()
+DetourNavigation::_bind_methods()
 {
-    register_method("initialize", &DetourNavigation::initialize);
-    register_method("rebuildChangedTiles", &DetourNavigation::rebuildChangedTiles);
-    register_method("markConvexArea", &DetourNavigation::markConvexArea);
-    register_method("addAgent", &DetourNavigation::addAgent);
-    register_method("removeAgent", &DetourNavigation::removeAgent);
-    register_method("addBoxObstacle", &DetourNavigation::addBoxObstacle);
-    register_method("addCylinderObstacle", &DetourNavigation::addCylinderObstacle);
-    register_method("createDebugMesh", &DetourNavigation::createDebugMesh);
-    register_method("setQueryFilter", &DetourNavigation::setQueryFilter);
-    register_method("save", &DetourNavigation::save);
-    register_method("load", &DetourNavigation::load);
-    register_method("clear", &DetourNavigation::clear);
-    register_method("getAgents", &DetourNavigation::getAgents);
-    register_method("getObstacles", &DetourNavigation::getObstacles);
-    register_method("getMarkedAreaIDs", &DetourNavigation::getMarkedAreaIDs);
-    register_method("isInitialized", &DetourNavigation::isInitialized);
-    register_method("addOffMeshConnection", &DetourNavigation::addOffMeshConnection);
-    register_method("removeOffMeshConnection", &DetourNavigation::removeOffMeshConnection);
-
-    register_signal<DetourNavigation>("navigation_tick_done", "executionTimeSeconds", Variant::INT);
+//    register_method("initialize", &DetourNavigation::initialize);
+//    register_method("rebuildChangedTiles", &DetourNavigation::rebuildChangedTiles);
+//    register_method("markConvexArea", &DetourNavigation::markConvexArea);
+//    register_method("addAgent", &DetourNavigation::addAgent);
+//    register_method("removeAgent", &DetourNavigation::removeAgent);
+//    register_method("addBoxObstacle", &DetourNavigation::addBoxObstacle);
+//    register_method("addCylinderObstacle", &DetourNavigation::addCylinderObstacle);
+//    register_method("createDebugMesh", &DetourNavigation::createDebugMesh);
+//    register_method("setQueryFilter", &DetourNavigation::setQueryFilter);
+//    register_method("save", &DetourNavigation::save);
+//    register_method("load", &DetourNavigation::load);
+//    register_method("clear", &DetourNavigation::clear);
+//    register_method("getAgents", &DetourNavigation::getAgents);
+//    register_method("getObstacles", &DetourNavigation::getObstacles);
+//    register_method("getMarkedAreaIDs", &DetourNavigation::getMarkedAreaIDs);
+//    register_method("isInitialized", &DetourNavigation::isInitialized);
+//    register_method("addOffMeshConnection", &DetourNavigation::addOffMeshConnection);
+//    register_method("removeOffMeshConnection", &DetourNavigation::removeOffMeshConnection);
+//
+//    register_signal<DetourNavigation>("navigation_tick_done", "executionTimeSeconds", Variant::INT);
 }
 
 DetourNavigation::DetourNavigation()
@@ -395,7 +395,7 @@ Ref<DetourCrowdAgent> DetourNavigation::addAgent(Ref<DetourCrowdAgentParameters>
     }
 
     // Create and add the agent as main
-    Ref<DetourCrowdAgent> agent = DetourCrowdAgent::_new();
+    Ref<DetourCrowdAgent> agent = new DetourCrowdAgent();
     if (!navMesh->addAgent(agent, parameters))
     {
         ERR_PRINT("Unable to add agent.");
@@ -457,7 +457,7 @@ DetourNavigation::addCylinderObstacle(Vector3 position, float radius, float heig
     _navigationMutex->lock();
 
     // Create the obstacle
-    Ref<DetourObstacle> obstacle = DetourObstacle::_new();
+    Ref<DetourObstacle> obstacle = new DetourObstacle();
     obstacle->initialize(OBSTACLE_TYPE_CYLINDER, position, Vector3(radius, height, 0.0f), 0.0f);
 
     // Add the obstacle to all navmeshes
@@ -477,7 +477,7 @@ DetourNavigation::addBoxObstacle(Vector3 position, Vector3 dimensions, float rot
     _navigationMutex->lock();
 
     // Create the obstacle
-    Ref<DetourObstacle> obstacle = DetourObstacle::_new();
+    Ref<DetourObstacle> obstacle = new DetourObstacle();
     obstacle->initialize(OBSTACLE_TYPE_BOX, position, dimensions, rotationRad);
 
     // Add the obstacle to all navmeshes
@@ -518,7 +518,7 @@ DetourNavigation::createDebugMesh(int index, bool drawCacheBounds)
     navMesh->createDebugMesh(_debugDrawer, drawCacheBounds);
 
     // Add the result to the MeshInstance and return it
-    MeshInstance3D* meshInst = MeshInstance3D::_new();
+    MeshInstance3D* meshInst = new MeshInstance3D();
     meshInst->set_mesh(_debugDrawer->getArrayMesh());
 
     _navigationMutex->unlock();
@@ -536,10 +536,10 @@ DetourNavigation::save(String path, bool compressed)
     }
 
     // Open the file
-    Ref<FileAccess> saveFile = FileAccess::_new();
+    Ref<FileAccess> saveFile;
     Error result;
-    Ref<Directory> dir = Directory::_new();
-    result = dir->make_dir_recursive(path.left(path.find_last("/")));
+    Ref<DirAccess> dir = new DirAccess();
+    result = dir->make_dir_recursive(path.left(path.rfind("/")));
     if (result != Error::OK)
     {
         ERR_PRINT(String("DTNavSave: Error while creating navigation file path: {0} {1}").format(Array::make(path, (int)result)));
@@ -547,12 +547,13 @@ DetourNavigation::save(String path, bool compressed)
     }
     if (compressed)
     {
-        result = saveFile->open_compressed(path, File::WRITE, File::COMPRESSION_ZSTD);
+        saveFile = FileAccess::open_compressed(path, FileAccess::WRITE, FileAccess::COMPRESSION_ZSTD);
     }
     else
     {
-        result = saveFile->open(path, File::WRITE);
+        saveFile = FileAccess::open(path, FileAccess::WRITE);
     }
+    result = saveFile->get_open_error();
     if (result != Error::OK)
     {
         ERR_PRINT(String("DTNavSave: Error while opening navigation save file: {0} {1}").format(Array::make(path, (int)result)));
@@ -653,16 +654,17 @@ DetourNavigation::load(String path, bool compressed)
     }
 
     // Load the file
-    Ref<FileAccess> saveFile = FileAccess::_new();
+    Ref<FileAccess> saveFile;
     Error result;
     if (compressed)
     {
-        result = saveFile->open_compressed(path, FileAccess::READ, FileAccess::COMPRESSION_ZSTD);
+        saveFile = FileAccess::open_compressed(path, FileAccess::READ, FileAccess::COMPRESSION_ZSTD);
     }
     else
     {
-        result = saveFile->open(path, FileAccess::READ);
+        saveFile = FileAccess::open(path, FileAccess::READ);
     }
+    result = saveFile->get_open_error();
     if (result != Error::OK)
     {
         ERR_PRINT(String("DTNavLoad: Error while opening navigation save file: {0} {1}").format(Array::make(path, (int)result)));
@@ -725,7 +727,7 @@ DetourNavigation::load(String path, bool compressed)
         int numAgents = saveFile->get_32();
         for (int i = 0; i < numAgents; ++i)
         {
-            Ref<DetourCrowdAgent> agent = DetourCrowdAgent::_new();
+            Ref<DetourCrowdAgent> agent = new DetourCrowdAgent();
             if (!agent->load(saveFile))
             {
                 ERR_PRINT("DTNavLoad: Unable to load agent.");
@@ -733,7 +735,7 @@ DetourNavigation::load(String path, bool compressed)
             }
 
             // Load parameter values
-            Ref<DetourCrowdAgentParameters> params = DetourCrowdAgentParameters::_new();
+            Ref<DetourCrowdAgentParameters> params = new DetourCrowdAgentParameters();
             if (!agent->loadParameterValues(params, saveFile))
             {
                 ERR_PRINT("DTNavLoad: Unable to load agent parameter values.");
@@ -765,7 +767,7 @@ DetourNavigation::load(String path, bool compressed)
         int numObstacles = saveFile->get_32();
         for (int i = 0; i < numObstacles; ++i)
         {
-            Ref<DetourObstacle> obstacle = DetourObstacle::_new();
+            Ref<DetourObstacle> obstacle = new DetourObstacle();
             if (!obstacle->load(saveFile))
             {
                 ERR_PRINT(String("DTNavLoad: Unable to load obstacle {0}").format(Array::make(i)));

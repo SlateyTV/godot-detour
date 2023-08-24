@@ -22,7 +22,7 @@ using namespace godot;
 #define NAVMESH_SAVE_VERSION 1
 
 void
-DetourNavigationMeshParameters::_register_methods()
+DetourNavigationMeshParameters::_bind_methods()
 {
     ///TODO: SlateyDev READD
 //    register_property<DetourNavigationMeshParameters, Vector2>("cellSize", &DetourNavigationMeshParameters::cellSize, Vector2(0.0f, 0.0f));
@@ -43,7 +43,7 @@ DetourNavigationMeshParameters::_register_methods()
 }
 
 void
-DetourNavigationMesh::_register_methods()
+DetourNavigationMesh::_bind_methods()
 {
     // TODO: Do we really need to expose this class to GDScript?
 }

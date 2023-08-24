@@ -23,7 +23,7 @@ namespace godot
      */
     struct DetourCrowdAgentParameters : public RefCounted
     {
-        GDEXTENSION_CLASS(DetourCrowdAgentParameters, RefCounted)
+        GDCLASS(DetourCrowdAgentParameters, RefCounted)
 
     public:
         /**
@@ -31,7 +31,7 @@ namespace godot
          */
         void _init() {}
 
-        static void _register_methods();
+        static void _bind_methods();
 
         Vector3 position;
 
@@ -72,10 +72,15 @@ namespace godot
      */
     class DetourCrowdAgent : public RefCounted
     {
-        GDEXTENSION_CLASS(DetourCrowdAgent, RefCounted);
+        GDCLASS(DetourCrowdAgent, RefCounted);
 
     public:
-        static void _register_methods();
+        static void _bind_methods();
+
+        /**
+         * @brief Destructor.
+         */
+        DetourCrowdAgent();
 
         /**
          * @brief Destructor.
