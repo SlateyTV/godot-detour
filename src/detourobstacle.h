@@ -103,6 +103,21 @@ namespace godot
         bool    _destroyed;
 
         std::map<dtTileCache*, unsigned int> _references;
+
+    public:
+        void set_position(Vector3 position) {
+            _position = position;
+        }
+        Vector3 get_position() const {
+            return _position;
+        }
+
+        void set_dimensions(Vector3 dimensions) {
+            _dimensions = dimensions;
+        }
+        Vector3 get_dimensions() const {
+            return _dimensions;
+        }
     };
 
 

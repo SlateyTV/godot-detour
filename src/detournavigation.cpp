@@ -24,9 +24,16 @@ using namespace godot;
 void
 DetourNavigationParameters::_bind_methods()
 {
-//    register_property<DetourNavigationParameters, Array>("navMeshParameters", &DetourNavigationParameters::navMeshParameters, Array());
-//    register_property<DetourNavigationParameters, int>("ticksPerSecond", &DetourNavigationParameters::ticksPerSecond, 60);
-//    register_property<DetourNavigationParameters, int>("maxObstacles", &DetourNavigationParameters::maxObstacles, 256);
+    ClassDB::bind_method(D_METHOD("set_nav_mesh_parameters", "params"), &DetourNavigationParameters::set_nav_mesh_parameters);
+    ClassDB::bind_method(D_METHOD("get_nav_mesh_parameters"), &DetourNavigationParameters::get_nav_mesh_parameters);
+    ClassDB::bind_method(D_METHOD("set_ticks_per_second", "tps"), &DetourNavigationParameters::set_ticks_per_second);
+    ClassDB::bind_method(D_METHOD("get_ticks_per_second"), &DetourNavigationParameters::get_ticks_per_second);
+    ClassDB::bind_method(D_METHOD("set_max_obstacles", "max"), &DetourNavigationParameters::set_max_obstacles);
+    ClassDB::bind_method(D_METHOD("get_max_obstacles"), &DetourNavigationParameters::get_max_obstacles);
+
+    ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "params"), "set_nav_mesh_parameters", "get_nav_mesh_parameters");
+    ADD_PROPERTY(PropertyInfo(Variant::INT, "tps"), "set_ticks_per_second", "get_ticks_per_second");
+    ADD_PROPERTY(PropertyInfo(Variant::INT, "max"), "set_max_obstacles", "get_max_obstacles");
 }
 
 void

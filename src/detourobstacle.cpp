@@ -15,6 +15,11 @@ DetourObstacle::_bind_methods()
     ClassDB::bind_method(D_METHOD("move"), &DetourObstacle::move);
     ClassDB::bind_method(D_METHOD("destroy"), &DetourObstacle::destroy);
 
+    ClassDB::bind_method(D_METHOD("set_position", "position"), &DetourObstacle::set_position);
+    ClassDB::bind_method(D_METHOD("get_position"), &DetourObstacle::get_position);
+    ClassDB::bind_method(D_METHOD("set_dimensions", "dimensions"), &DetourObstacle::set_dimensions);
+    ClassDB::bind_method(D_METHOD("get_dimensions"), &DetourObstacle::get_dimensions);
+
     ADD_PROPERTY(PropertyInfo(Variant::VECTOR3, "position"), "set_position", "get_position");
     ADD_PROPERTY(PropertyInfo(Variant::VECTOR3, "dimensions"), "set_dimensions", "get_dimensions");
 }

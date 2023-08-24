@@ -44,6 +44,28 @@ namespace godot
         int ticksPerSecond;         // How many updates per second the navigation shall do in its thread.
         int maxObstacles;           // The maximum amount of obstacles allowed at the same time. Obstacles beyond this amount will be rejected.
         int defaultAreaType;        // The default area type to mark geometry as
+
+    public:
+        void set_nav_mesh_parameters(Array params) {
+            navMeshParameters = params;
+        }
+        Array get_nav_mesh_parameters() {
+            return navMeshParameters;
+        }
+
+        void set_ticks_per_second(int tps) {
+            ticksPerSecond = tps;
+        }
+        int get_ticks_per_second() const {
+            return ticksPerSecond;
+        }
+
+        void set_max_obstacles(int max) {
+            maxObstacles = max;
+        }
+        int get_max_obstacles() const {
+            return maxObstacles;
+        }
     };
 
     /**
