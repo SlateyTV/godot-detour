@@ -26,14 +26,14 @@ sources += Glob('recastnavigation/Recast/Source/*.cpp')
 
 if env["platform"] == "macos":
     library = env.SharedLibrary(
-        "demo/bin/godot-detour.{}.{}.framework/slatey-terrain.{}.{}".format(
+        "demo/addons/godot-detour/bin/godot-detour.{}.{}.framework/slatey-terrain.{}.{}".format(
             env["platform"], env["target"], env["platform"], env["target"]
         ),
         source=sources,
     )
 else:
     library = env.SharedLibrary(
-        "demo/bin/godot-detour{}{}".format(env["suffix"], env["SHLIBSUFFIX"]),
+        "demo/addons/godot-detour/bin/godot-detour{}{}".format(env["suffix"], env["SHLIBSUFFIX"]),
         source=sources,
     )
 

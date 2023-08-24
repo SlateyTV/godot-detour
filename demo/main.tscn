@@ -1,256 +1,211 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=14 format=3 uid="uid://rpopc3q50la4"]
 
-[ext_resource path="res://main.gd" type="Script" id=1]
-[ext_resource path="res://fonts/default_font.tres" type="DynamicFont" id=2]
-[ext_resource path="res://fonts/default_font_bold.tres" type="DynamicFont" id=3]
-[ext_resource path="res://Camera.gd" type="Script" id=4]
+[ext_resource type="Script" path="res://main.gd" id="1"]
+[ext_resource type="FontFile" path="res://fonts/default_font.tres" id="2"]
+[ext_resource type="FontFile" path="res://fonts/default_font_bold.tres" id="3"]
+[ext_resource type="Script" path="res://Camera.gd" id="4"]
 
-[sub_resource type="SpatialMaterial" id=1]
+[sub_resource type="StandardMaterial3D" id="1"]
 
-[sub_resource type="SpatialMaterial" id=2]
-albedo_color = Color( 0.207843, 0.207843, 0.227451, 1 )
+[sub_resource type="StandardMaterial3D" id="2"]
+albedo_color = Color(0.207843, 0.207843, 0.227451, 1)
 
-[sub_resource type="CylinderShape" id=3]
+[sub_resource type="CylinderShape3D" id="3"]
 radius = 0.7
 
-[sub_resource type="SpatialMaterial" id=4]
+[sub_resource type="StandardMaterial3D" id="4"]
 vertex_color_use_as_albedo = true
-albedo_color = Color( 0.0117647, 1, 0.027451, 1 )
+albedo_color = Color(0.0117647, 1, 0.027451, 1)
 
-[sub_resource type="SphereMesh" id=5]
-material = SubResource( 4 )
+[sub_resource type="SphereMesh" id="5"]
+material = SubResource("4")
 
-[sub_resource type="CapsuleShape" id=6]
-radius = 0.5
+[sub_resource type="CapsuleShape3D" id="6"]
 height = 1.6
 
-[sub_resource type="CapsuleMesh" id=7]
+[sub_resource type="CapsuleMesh" id="7"]
 radius = 0.4
-mid_height = 1.4
+height = 1.4
 
-[sub_resource type="SpatialMaterial" id=8]
-albedo_color = Color( 0.0901961, 0, 0.729412, 1 )
-
-[sub_resource type="SphereMesh" id=9]
+[sub_resource type="SphereMesh" id="9"]
 radius = 0.3
 height = 0.6
 
-[sub_resource type="PrismMesh" id=10]
+[sub_resource type="PrismMesh" id="10"]
 left_to_right = 1.0
-size = Vector3( 0.2, 0.4, 0.2 )
+size = Vector3(0.2, 0.4, 0.2)
 
-[sub_resource type="SpatialMaterial" id=11]
-albedo_color = Color( 1, 0.960784, 0, 1 )
+[node name="Node3D" type="Node3D"]
+script = ExtResource("1")
 
-[node name="Spatial" type="Spatial"]
-script = ExtResource( 1 )
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 
-[node name="MeshInstance" type="MeshInstance" parent="."]
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="."]
 
-[node name="CSGCombiner" type="CSGCombiner" parent="."]
+[node name="CSGBox3D" type="CSGBox3D" parent="CSGCombiner3D"]
+size = Vector3(40, 0.2, 40)
+material = SubResource("1")
 
-[node name="CSGBox" type="CSGBox" parent="CSGCombiner"]
-width = 40.0
-height = 0.2
-depth = 40.0
-material = SubResource( 1 )
-
-[node name="CSGCylinder" type="CSGCylinder" parent="CSGCombiner"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 12.4112, 1.03915, -7.22117 )
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.4112, 1.03915, -7.22117)
 radius = 2.44625
 height = 8.0
 sides = 12
-material = SubResource( 2 )
+material = SubResource("2")
 
-[node name="CSGCylinder2" type="CSGCylinder" parent="CSGCombiner"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -11.2004, 0.58831, 8.52327 )
+[node name="CSGCylinder2" type="CSGCylinder3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.2004, 0.58831, 8.52327)
 radius = 2.43059
 height = 4.0
 sides = 12
-material = SubResource( 2 )
+material = SubResource("2")
 
-[node name="BigColumn" type="CSGCylinder" parent="CSGCombiner"]
-transform = Transform( 1, 0, 0, 0, 0.611159, 0, 0, 0, 1, -7.93539, 2.7481, -13.3401 )
+[node name="BigColumn" type="CSGCylinder3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 0.611159, 0, 0, 0, 1, -7.93539, 2.7481, -13.3401)
 radius = 4.61686
 height = 4.0
 sides = 12
-material = SubResource( 2 )
+material = SubResource("2")
 
-[node name="CSGPolygon" type="CSGPolygon" parent="CSGCombiner"]
-transform = Transform( 3.71727, 1.24289, 0.00846035, 0, -0.0099564, 1.46267, 1.11043, -4.1607, -0.0283219, 6.48618, 0.35709, 12.9404 )
+[node name="CSGPolygon3D" type="CSGPolygon3D" parent="CSGCombiner3D"]
+transform = Transform3D(3.71727, 1.24289, 0.00846035, 0, -0.0099564, 1.46267, 1.11043, -4.1607, -0.0283219, 6.48618, 0.35709, 12.9404)
 operation = 2
-polygon = PoolVector2Array( -0.559145, -0.565203, 0, 1, 0.419084, -0.391568, 2.37342, 0.490185, 1.66675, -1.52039 )
+polygon = PackedVector2Array(-0.559145, -0.565203, 0, 1, 0.419084, -0.391568, 2.37342, 0.490185, 1.66675, -1.52039)
 
-[node name="CSGBox2" type="CSGBox" parent="CSGCombiner"]
-transform = Transform( 0.891328, 0.000883147, -0.453358, -0.000907711, 1, 0.000163413, 0.453357, 0.000265883, 0.891329, -4.17067, -4.76837e-07, 11.4612 )
+[node name="CSGBox2" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(0.891328, 0.000883147, -0.453358, -0.000907711, 1, 0.000163413, 0.453357, 0.000265883, 0.891329, -4.17067, -4.76837e-07, 11.4612)
 operation = 2
-width = 6.0
-depth = 8.0
+size = Vector3(6, 1, 8)
 
-[node name="Ramp" type="CSGBox" parent="CSGCombiner"]
-transform = Transform( 0.0172081, -0.425511, -0.90479, 0, 0.904924, -0.425574, 0.999852, 0.00732315, 0.0155725, -9.93966, 3.45367, 0.403392 )
-width = 4.0
-height = 0.2
-depth = 20.0
-material = SubResource( 1 )
+[node name="Ramp" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(0.0172081, -0.425511, -0.90479, 0, 0.904924, -0.425574, 0.999852, 0.00732315, 0.0155725, -9.93966, 3.45367, 0.403392)
+size = Vector3(4, 0.2, 20)
+material = SubResource("1")
 
-[node name="Ramp3" type="CSGBox" parent="CSGCombiner"]
-transform = Transform( 0.0172081, -0.425511, -0.90479, 0, 0.904924, -0.425574, 0.999852, 0.00732315, 0.0155725, 14.2485, 19.9875, 0.403392 )
-width = 4.0
-height = 0.2
-depth = 20.0
-material = SubResource( 1 )
+[node name="Ramp3" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(0.0172081, -0.425511, -0.90479, 0, 0.904924, -0.425574, 0.999852, 0.00732315, 0.0155725, 14.2485, 19.9875, 0.403392)
+size = Vector3(4, 0.2, 20)
+material = SubResource("1")
 
-[node name="Ramp4" type="CSGBox" parent="CSGCombiner"]
-transform = Transform( -0.271148, 0.204634, 0.940534, 0.0247539, 0.978299, -0.205714, -0.962219, -0.032497, -0.27033, 14.7623, 25.0216, 4.86232 )
-width = 4.0
-height = 0.2
-depth = 20.0
-material = SubResource( 1 )
+[node name="Ramp4" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(-0.271148, 0.204634, 0.940534, 0.0247539, 0.978299, -0.205714, -0.962219, -0.032497, -0.27033, 14.7623, 25.0216, 4.86232)
+size = Vector3(4, 0.2, 20)
+material = SubResource("1")
 
-[node name="Ramp2" type="CSGBox" parent="CSGCombiner"]
-transform = Transform( -0.625028, -0.41332, -0.662198, -0.00156549, 0.848979, -0.528425, 0.7806, -0.329244, -0.531283, -5.51536, 4.82158, -10.9785 )
-width = 3.2
-height = 0.2
-depth = 10.0
-material = SubResource( 2 )
+[node name="Ramp2" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(-0.625028, -0.41332, -0.662198, -0.00156549, 0.848979, -0.528425, 0.7806, -0.329244, -0.531283, -5.51536, 4.82158, -10.9785)
+size = Vector3(3.2, 0.2, 10)
+material = SubResource("2")
 
-[node name="Platform" type="CSGBox" parent="CSGCombiner"]
-transform = Transform( 0.990629, 0, 0.13658, 0, 1, 0, -0.13658, 0, 0.990629, 6.23879, 7.56228, -1.90465 )
-width = 16.0
-height = 0.2
-depth = 16.0
-material = SubResource( 1 )
+[node name="Platform" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(0.990629, 0, 0.13658, 0, 1, 0, -0.13658, 0, 0.990629, 6.23879, 7.56228, -1.90465)
+size = Vector3(16, 0.2, 16)
+material = SubResource("1")
 
-[node name="Platform2" type="CSGBox" parent="CSGCombiner"]
-transform = Transform( 0.884385, 0, -0.466757, -0.0732583, 0.987606, -0.138806, 0.460972, 0.156952, 0.873425, 6.23879, 16.4212, -1.90465 )
-width = 16.0
-height = 0.2
-depth = 16.0
-material = SubResource( 1 )
+[node name="Platform2" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(0.884385, 0, -0.466757, -0.0732583, 0.987606, -0.138806, 0.460972, 0.156952, 0.873425, 6.23879, 16.4212, -1.90465)
+size = Vector3(16, 0.2, 16)
+material = SubResource("1")
 
-[node name="Platform3" type="CSGBox" parent="CSGCombiner"]
-transform = Transform( 0.607635, 0.043075, -0.793047, 0.0979599, 0.986839, 0.128658, 0.788152, -0.155864, 0.595418, 6.23879, 25.4031, -1.90465 )
-width = 16.0
-height = 0.2
-depth = 16.0
-material = SubResource( 1 )
+[node name="Platform3" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(0.607635, 0.043075, -0.793047, 0.0979599, 0.986839, 0.128658, 0.788152, -0.155864, 0.595418, 6.23879, 25.4031, -1.90465)
+size = Vector3(16, 0.2, 16)
+material = SubResource("1")
 
 [node name="Control" type="Control" parent="."]
-margin_right = 1024.0
-margin_bottom = 600.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1024.0
+offset_bottom = 600.0
 
 [node name="TopLbl" type="RichTextLabel" parent="Control"]
-margin_left = 10.0
-margin_right = 1020.0
-margin_bottom = 32.0
-custom_fonts/bold_font = ExtResource( 3 )
-custom_fonts/normal_font = ExtResource( 2 )
+layout_mode = 0
+offset_left = 10.0
+offset_right = 1020.0
+offset_bottom = 32.0
+theme_override_fonts/normal_font = ExtResource("2")
+theme_override_fonts/bold_font = ExtResource("3")
 bbcode_enabled = true
-bbcode_text = "To advance to the next demo step, press [b]space[/b]."
-tab_size = 1
 text = "To advance to the next demo step, press space."
-__meta__ = {
-"_edit_use_anchors_": false
-}
+tab_size = 1
 
 [node name="NextStepLbl" type="RichTextLabel" parent="Control"]
-margin_left = 10.0
-margin_top = 30.0
-margin_right = 1020.0
-margin_bottom = 62.0
-custom_fonts/bold_font = ExtResource( 3 )
-custom_fonts/normal_font = ExtResource( 2 )
+layout_mode = 0
+offset_left = 10.0
+offset_top = 30.0
+offset_right = 1020.0
+offset_bottom = 62.0
+theme_override_fonts/normal_font = ExtResource("2")
+theme_override_fonts/bold_font = ExtResource("3")
 bbcode_enabled = true
-bbcode_text = "Next step:     Initialize navigation"
-tab_size = 1
 text = "Next step:     Initialize navigation"
-__meta__ = {
-"_edit_use_anchors_": false
-}
+tab_size = 1
 
 [node name="TempLbl" type="RichTextLabel" parent="Control"]
-margin_left = 10.0
-margin_top = 60.0
-margin_right = 1020.0
-margin_bottom = 92.0
-custom_fonts/bold_font = ExtResource( 3 )
-custom_fonts/normal_font = ExtResource( 2 )
+layout_mode = 0
+offset_left = 10.0
+offset_top = 60.0
+offset_right = 1020.0
+offset_bottom = 92.0
+theme_override_fonts/normal_font = ExtResource("2")
+theme_override_fonts/bold_font = ExtResource("3")
 bbcode_enabled = true
-bbcode_text = "
-"
-tab_size = 1
 text = "
 "
 scroll_active = false
-__meta__ = {
-"_edit_use_anchors_": false
-}
+tab_size = 1
 
 [node name="lolMouseCursor" type="ColorRect" parent="Control"]
+layout_mode = 0
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_right = 4.0
-margin_bottom = 4.0
-rect_rotation = 45.0
-color = Color( 0.00784314, 0.0235294, 0.976471, 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+offset_right = 4.0
+offset_bottom = 4.0
+rotation = 45.0
+color = Color(0.00784314, 0.0235294, 0.976471, 1)
 
-[node name="Camera" type="Camera" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10.944, 6.69301, -5.17557 )
-fov = 75.0
-script = ExtResource( 4 )
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.944, 6.69301, -5.17557)
+script = ExtResource("4")
 
-[node name="Obstacle" type="RigidBody" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -11.9658, 1.36825, -21.6228 )
+[node name="Obstacle" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.9658, 1.36825, -21.6228)
 collision_layer = 2
 collision_mask = 7
-mode = 1
 
-[node name="CollisionShape" type="CollisionShape" parent="Obstacle"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
-shape = SubResource( 3 )
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Obstacle"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("3")
 
-[node name="Portal1" type="MeshInstance" parent="."]
-transform = Transform( 0.728024, 0, -0.205665, 0, 1, 0, 0.685552, 0, 0.218407, 10.7405, 8.1593, -8.13934 )
-mesh = SubResource( 5 )
-material/0 = null
+[node name="Portal1" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.728024, 0, -0.205665, 0, 1, 0, 0.685552, 0, 0.218407, 10.7405, 8.1593, -8.13934)
+mesh = SubResource("5")
 
-[node name="Portal2" type="MeshInstance" parent="."]
-transform = Transform( -0.36986, 0, -0.278726, 0, 1, 0, 0.929087, 0, -0.110958, 0.216852, 17.1793, -2.49366 )
-mesh = SubResource( 5 )
-material/0 = null
+[node name="Portal2" type="MeshInstance3D" parent="."]
+transform = Transform3D(-0.36986, 0, -0.278726, 0, 1, 0, 0.929087, 0, -0.110958, 0.216852, 17.1793, -2.49366)
+mesh = SubResource("5")
 
-[node name="Agent" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -13.3258, -0.352671, -24.0352 )
+[node name="Agent" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.3258, -0.352671, -24.0352)
 
-[node name="RigidBody" type="RigidBody" parent="Agent"]
-transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 1.3504, 0 )
+[node name="RigidBody3D" type="RigidBody3D" parent="Agent"]
+transform = Transform3D(1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 1.3504, 0)
 collision_layer = 7
 collision_mask = 7
-mode = 1
 
-[node name="CollisionShape" type="CollisionShape" parent="Agent/RigidBody"]
-shape = SubResource( 6 )
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Agent/RigidBody3D"]
+shape = SubResource("6")
 
-[node name="MeshInstance" type="MeshInstance" parent="Agent"]
-transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 1.3504, 0 )
-mesh = SubResource( 7 )
-material/0 = SubResource( 8 )
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Agent"]
+transform = Transform3D(1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 1.3504, 0)
+mesh = SubResource("7")
 
-[node name="MeshInstance2" type="MeshInstance" parent="Agent"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.84794, 0 )
-mesh = SubResource( 9 )
-material/0 = SubResource( 8 )
+[node name="MeshInstance2" type="MeshInstance3D" parent="Agent"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.84794, 0)
+mesh = SubResource("9")
 
-[node name="MeshInstance3" type="MeshInstance" parent="Agent"]
-transform = Transform( -0.0268226, 0.00650759, 0.999619, -0.99964, -0.000174613, -0.026822, 0, -0.999979, 0.00650993, 0, 2.90269, -0.403509 )
-mesh = SubResource( 10 )
-material/0 = SubResource( 11 )
+[node name="MeshInstance3" type="MeshInstance3D" parent="Agent"]
+transform = Transform3D(-0.0268226, 0.00650759, 0.999619, -0.99964, -0.000174613, -0.026822, 0, -0.999979, 0.00650993, 0, 2.90269, -0.403509)
+mesh = SubResource("10")

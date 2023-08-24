@@ -7,6 +7,7 @@
 *.o
 *.obj
 *.os
+*.exp
 
 # Precompiled Headers
 *.gch
@@ -45,3 +46,5 @@ demo/export_presets.cfg
 
 # JetBrains IDE files
 .idea/
+
+.godot/

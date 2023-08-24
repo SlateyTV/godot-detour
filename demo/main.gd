@@ -1,20 +1,13 @@
-extends Spatial
+extends Node3D
 
-const DetourNavigation 	            :NativeScript = preload("res://addons/godotdetour/detournavigation.gdns")
-const DetourNavigationParameters	:NativeScript = preload("res://addons/godotdetour/detournavigationparameters.gdns")
-const DetourNavigationMeshParameters    :NativeScript = preload("res://addons/godotdetour/detournavigationmeshparameters.gdns")
-const DetourCrowdAgent	            :NativeScript = preload("res://addons/godotdetour/detourcrowdagent.gdns")
-const DetourCrowdAgentParameters    :NativeScript = preload("res://addons/godotdetour/detourcrowdagentparameters.gdns")
-const DetourObstacle				:NativeScript = preload("res://addons/godotdetour/detourobstacle.gdns")
-
-const SuccessSound :AudioStreamSample = preload("res://sounds/success.wav")
+const SuccessSound :AudioStreamWAV = preload("res://sounds/success.wav")
 
 var navigation = null
 var testIndex :int = -1
-onready var nextStepLbl : RichTextLabel = get_node("Control/NextStepLbl")
-var debugMeshInstance :MeshInstance = null
+@onready var nextStepLbl : RichTextLabel = get_node("Control/NextStepLbl")
+var debugMeshInstance :MeshInstance3D = null
 
-var levelStaticBody			:StaticBody = null
+var levelStaticBody			:StaticBody3D = null
 var doPlaceRemoveObstacle 	:bool = false
 var doMarkArea				:bool = false
 var doPlaceRemoveAgent		:bool = false
@@ -25,7 +18,7 @@ var agents					:Dictionary = {}
 var shiftDown				:bool = false
 var usePrediction			:bool = true
 var navMeshToDisplay		:int = 0
-var lastUpdateTimestamp		:int = OS.get_ticks_msec()
+var lastUpdateTimestamp		:int = Time.get_ticks_msec()
 var offMeshID				:int = 0
 
 # Called when the node enters the scene tree for the first time.
@@ -37,7 +30,7 @@ func _ready():
 func _input(event :InputEvent) -> void:
 	# Remember if shift is pressed
 	if event is InputEventKey:
-		if event.scancode == KEY_SHIFT:
+		if event.keycode == KEY_SHIFT:
 			shiftDown = event.pressed
 	
 	# Switch displayed navmesh
@@ -61,19 +54,19 @@ func _input(event :InputEvent) -> void:
 		doNextTest(testIndex)
 	# Place/remove obstacle
 	if testIndex == 1 && event.is_action("obstacle") && event.is_pressed():
-		rayQueryPos = $Camera.translation
+		rayQueryPos = $Camera3D.position
 		doPlaceRemoveObstacle = true
 	# Mark area
 	if testIndex == 1 && event.is_action("mark_area") && event.is_pressed():
-		rayQueryPos = $Camera.translation
+		rayQueryPos = $Camera3D.position
 		doMarkArea = true
 	# Add agent
 	if testIndex == 1 && event.is_action("agent") && event.is_pressed():
-		rayQueryPos = $Camera.translation
+		rayQueryPos = $Camera3D.position
 		doPlaceRemoveAgent = true
 	# Set movement target
 	if testIndex == 1 && event.is_action("set_target_pos") && event.is_pressed():
-		rayQueryPos = $Camera.translation
+		rayQueryPos = $Camera3D.position
 		doSetTargetPosition = true
 	# Set movement target
 	if testIndex == 1 && event.is_action("save_and_load") && event.is_pressed():
@@ -83,15 +76,15 @@ func _input(event :InputEvent) -> void:
 func doNextTest(index :int) -> void:
 	if index == 0:
 		nextStepLbl.text = "Initializing the navigation..."
-		yield(get_tree(), "idle_frame")
-		yield(initializeNavigation(), "completed")
+		await get_tree().process_frame
+		await initializeNavigation()
 		nextStepLbl.text = "Next step:      Enable Navigation Debug Drawing"
 	if index == 1:
 		nextStepLbl.text = "Drawing debug mesh..."
-		yield(get_tree(), "idle_frame")
+		await get_tree().process_frame
 		drawDebugMesh()
-		$Control/TopLbl.bbcode_text = "[b](LMB)[/b] place/remove agent  [b](Shift + LMB)[/b] place thicc agent  [b](RMB)[/b] set destination  [b](F)[/b] place/remove obstacle"
-		nextStepLbl.bbcode_text = "[b](M)[/b] mark water area  [b](Shift + L)[/b] save, clear and re-load navmesh  [b](O)[/b] switch displayed navmesh  [b](P)[/b] prediction on/off"
+		$Control/TopLbl.text = "[b](LMB)[/b] place/remove agent  [b](Shift + LMB)[/b] place thicc agent  [b](RMB)[/b] set destination  [b](F)[/b] place/remove obstacle"
+		nextStepLbl.text = "[b](M)[/b] mark water area  [b](Shift + L)[/b] save, clear and re-load navigation_mesh  [b](O)[/b] switch displayed navigation_mesh  [b](P)[/b] prediction on/off"
 
 # Initializes the navigation
 func initializeNavigation():
@@ -160,10 +153,10 @@ func initializeNavigation():
 	navParams.navMeshParameters.append(navMeshParamsLarge)
 
 	# Create the arrayMesh from the CSG and set it as the meshInstance's mesh
-	var csgCombiner :CSGShape = get_node("CSGCombiner")
+	var csgCombiner :CSGShape3D = get_node("CSGCombiner3D")
 	csgCombiner._update_shape()
 	var arrayMesh :ArrayMesh = csgCombiner.get_meshes()[1]
-	var meshInstance :MeshInstance = get_node("MeshInstance")
+	var meshInstance :MeshInstance3D = get_node("MeshInstance3D")
 	if meshInstance.mesh == null:
 		meshInstance.mesh = arrayMesh
 		meshInstance.create_trimesh_collision()
@@ -200,8 +193,8 @@ func initializeNavigation():
 	navigation.setQueryFilter(1, "all-the-same", weights)
 	
 	# Wait until the first tick is done to add an off-mesh connection and rebuild
-	yield(navigation, "navigation_tick_done")
-	offMeshID = navigation.addOffMeshConnection($Portal1.translation, $Portal2.translation, true, 0.35, 0)
+	await navigation.navigation_tick_done
+	offMeshID = navigation.addOffMeshConnection($Portal1.position, $Portal2.position, true, 0.35, 0)
 	navigation.rebuildChangedTiles()
 
 # Draws and displays the debug mesh
@@ -223,8 +216,8 @@ func drawDebugMesh() -> void:
 		return
 
 	# Add the debug mesh instance a little elevated to avoid flickering
-	debugMeshInstance.translation = Vector3(0.0, 0.05, 0.0)
-	var displayMeshInst :MeshInstance = get_node("MeshInstance")
+	debugMeshInstance.position = Vector3(0.0, 0.05, 0.0)
+	var displayMeshInst :MeshInstance3D = get_node("MeshInstance3D")
 	debugMeshInstance.rotation = displayMeshInst.rotation
 	add_child(debugMeshInstance)
 
@@ -242,13 +235,14 @@ func _physics_process(delta):
 			collisionMask = 1 | 3
 
 		# Querying is the same for obstacles, marks & agents
-		var cam :Camera = $Camera
+		var cam :Camera3D = $Camera3D
 		var to :Vector3 = rayQueryPos + 1000.0 * -cam.global_transform.basis.z
-		var spaceState :PhysicsDirectSpaceState = get_world().direct_space_state
-		var result :Dictionary = spaceState.intersect_ray(rayQueryPos, to, [], collisionMask)
+		var spaceState :PhysicsDirectSpaceState3D = get_world_3d().direct_space_state
+		var ray_query = PhysicsRayQueryParameters3D.create(rayQueryPos, to, collisionMask, [])
+		var result :Dictionary = spaceState.intersect_ray(ray_query)
 
 		# Quit if we didn't hit anything
-		if result.empty():
+		if result.is_empty():
 			return
 
 		# Place or remove an obstacle
@@ -259,8 +253,8 @@ func _physics_process(delta):
 			# Check if we hit the level geometry
 			if result.collider == levelStaticBody:
 				# Create an obstacle in Godot
-				var newObstacle :RigidBody = $Obstacle.duplicate()
-				newObstacle.translation = result.position
+				var newObstacle :RigidBody3D = $Obstacle.duplicate()
+				newObstacle.position = result.position
 				add_child(newObstacle)
 
 				# Create an obstacle in GodotDetour and remember both
@@ -271,7 +265,7 @@ func _physics_process(delta):
 			# Otherwise, we hit an obstacle
 			else:
 				# Remove the obstacle
-				var obstacle :RigidBody = result.collider
+				var obstacle :RigidBody3D = result.collider
 				var godotDetourObstacle = obstacles[obstacle]
 				godotDetourObstacle.destroy() # This is important! Don't leave memory leaks
 				obstacles.erase(obstacle)
@@ -285,10 +279,10 @@ func _physics_process(delta):
 
 			var vertices :Array = []
 			var targetPos :Vector3 = result.position
-			vertices.append(targetPos + Vector3(rand_range(-0.5, -2.0), -0.5, rand_range(-0.5, -2.0)))
-			vertices.append(targetPos + Vector3(rand_range(0.5, 2.0), -0.5, rand_range(-0.5, -2.0)))
-			vertices.append(targetPos + Vector3(rand_range(0.5, 2.0), -0.5, rand_range(0.5, 2.0)))
-			vertices.append(targetPos + Vector3(rand_range(-0.5, -2.0), -0.5, rand_range(0.5, 2.0)))
+			vertices.append(targetPos + Vector3(randf_range(-0.5, -2.0), -0.5, randf_range(-0.5, -2.0)))
+			vertices.append(targetPos + Vector3(randf_range(0.5, 2.0), -0.5, randf_range(-0.5, -2.0)))
+			vertices.append(targetPos + Vector3(randf_range(0.5, 2.0), -0.5, randf_range(0.5, 2.0)))
+			vertices.append(targetPos + Vector3(randf_range(-0.5, -2.0), -0.5, randf_range(0.5, 2.0)))
 			var markedAreaId = navigation.markConvexArea(vertices, 1.5, 2) # 2 = water
 
 			# Doing this right after marking a single area is not good for performance
@@ -340,15 +334,15 @@ func _physics_process(delta):
 					print("Unable to place agent!")
 				else:
 					# Create an agent in Godot
-					var newAgent :Spatial = $Agent.duplicate()
+					var newAgent :Node3D = $Agent.duplicate()
 					if shiftDown:
 						newAgent.scale = Vector3(2, 1.3, 2)
-					newAgent.translation = result.position
+					newAgent.position = result.position
 					add_child(newAgent)
 					
-					detourCrowdAgent.connect("arrived_at_target", self, "onAgentArrived", [newAgent], CONNECT_DEFERRED)
-					detourCrowdAgent.connect("no_progress", self, "onAgentNoProgress", [newAgent], CONNECT_DEFERRED)
-					detourCrowdAgent.connect("no_movement", self, "onAgentNoMovement", [newAgent], CONNECT_DEFERRED)
+					detourCrowdAgent.connect("arrived_at_target", Callable(self, "onAgentArrived").bind(newAgent), CONNECT_DEFERRED)
+					detourCrowdAgent.connect("no_progress", Callable(self, "onAgentNoProgress").bind(newAgent), CONNECT_DEFERRED)
+					detourCrowdAgent.connect("no_movement", Callable(self, "onAgentNoMovement").bind(newAgent), CONNECT_DEFERRED)
 					var audioPlayer :AudioStreamPlayer3D = AudioStreamPlayer3D.new()
 					audioPlayer.name = "AudioPlayer"
 					newAgent.add_child(audioPlayer)
@@ -356,7 +350,7 @@ func _physics_process(delta):
 			# Otherwise, we hit an agent
 			else:
 				# Remove the agent
-				var agent :Spatial = result.collider.get_parent()
+				var agent :Node3D = result.collider.get_parent()
 				var detourCrowdAgent = agents[agent]
 				navigation.removeAgent(detourCrowdAgent) # This is important! Don't leave memory leaks
 				agents.erase(agent)
@@ -375,21 +369,21 @@ func _physics_process(delta):
 			var timer :Timer = Timer.new()
 			timer.set_one_shot(true)
 			timer.set_wait_time(0.1)
-			timer.connect("timeout", self, "drawDebugMesh")
+			timer.connect("timeout", Callable(self, "drawDebugMesh"))
 			add_child(timer)
 			timer.start()
 
 # Go through the entire process of saving and re-loading the navmesh
 func doSaveLoadRoutine():
 	# Save the current state (twice to see difference between compressed and raw)
-	$Control/TempLbl.bbcode_text = "Saving current state..."
-	yield(get_tree(), "idle_frame")
+	$Control/TempLbl.text = "Saving current state..."
+	await get_tree().process_frame
 	navigation.save("user://navmeshes/stored_navmesh_raw.dat", false)
 	navigation.save("user://navmeshes/stored_navmesh.dat", true)
 	
 	# Clear the navigation
-	$Control/TempLbl.bbcode_text = "Clearing navigation..."
-	yield(get_tree(), "idle_frame")
+	$Control/TempLbl.text = "Clearing navigation..."
+	await get_tree().process_frame
 	navigation.clear()
 	
 	# Remove all agent references (no need to remove the DetourCrowdAgent, clear() did that)
@@ -409,11 +403,11 @@ func doSaveLoadRoutine():
 		remove_child(debugMeshInstance)
 		debugMeshInstance.queue_free()
 		debugMeshInstance = null
-	yield(get_tree().create_timer(2.0), "timeout")
+	await get_tree().create_timer(2.0).timeout
 	
 	# Load the state
-	$Control/TempLbl.bbcode_text = "Loading navmesh..."
-	yield(get_tree(), "idle_frame")
+	$Control/TempLbl.text = "Loading navigation_mesh..."
+	await get_tree().process_frame
 	navigation.load("user://navmeshes/stored_navmesh.dat", true)
 	
 	# Retrieve the lists of agents, marked areas and obstacles and restore our lists
@@ -424,17 +418,17 @@ func doSaveLoadRoutine():
 	# Re-add agent representations
 	for detourCrowdAgent in allAgents:
 		# Create an agent in Godot
-		var newAgent :Spatial = $Agent.duplicate()
-		newAgent.translation = detourCrowdAgent.position
+		var newAgent :Node3D = $Agent.duplicate()
+		newAgent.position = detourCrowdAgent.position
 		add_child(newAgent)
 		agents[newAgent] = detourCrowdAgent
 	
 	# Re-add obstacles
 	for detourObstacle in allObstacles:
 		# Create an obstacle in Godot
-		var newObstacle :RigidBody = $Obstacle.duplicate()
-		newObstacle.translation = detourObstacle.position
-		newObstacle.translation.y += 0.2
+		var newObstacle :RigidBody3D = $Obstacle.duplicate()
+		newObstacle.position = detourObstacle.position
+		newObstacle.position.y += 0.2
 		add_child(newObstacle)
 		
 		# Create an obstacle in GodotDetour and remember both
@@ -444,11 +438,11 @@ func doSaveLoadRoutine():
 	# Draw the debug mesh
 	# Make sure everything loaded by the Navigation has been applied internally after the first internal navigation thread tick
 	# Otherwise, we risk drawing an "unfinished" state
-	yield(navigation, "navigation_tick_done")
+	await navigation.navigation_tick_done
 	drawDebugMesh()
 	
 	# Done
-	$Control/TempLbl.bbcode_text = ""
+	$Control/TempLbl.text = ""
 	
 # Update function
 func _process(delta):
@@ -457,18 +451,18 @@ func _process(delta):
 		var detourCrowdAgent = agents[agent]
 		if detourCrowdAgent.isMoving == true:
 			if usePrediction:
-				var result :Dictionary = detourCrowdAgent.getPredictedMovement(agent.translation, -agent.global_transform.basis.z, lastUpdateTimestamp, deg2rad(2.5))
-				agent.translation = result["position"]
-				agent.look_at(agent.translation + result["direction"], agent.transform.basis.y)
+				var result :Dictionary = detourCrowdAgent.getPredictedMovement(agent.position, -agent.global_transform.basis.z, lastUpdateTimestamp, deg_to_rad(2.5))
+				agent.position = result["position"]
+				agent.look_at(agent.position + result["direction"], agent.transform.basis.y)
 			else:
-				agent.translation = detourCrowdAgent.position
-				agent.look_at(agent.translation + detourCrowdAgent.velocity, agent.transform.basis.y)
+				agent.position = detourCrowdAgent.position
+				agent.look_at(agent.position + detourCrowdAgent.velocity, agent.transform.basis.y)
 	
 	# Remember time of update
-	lastUpdateTimestamp = OS.get_ticks_msec()
+	lastUpdateTimestamp = Time.get_ticks_msec()
 
 # Do something when an agent arrived
-func onAgentArrived(detourAgent, agent :Spatial):
+func onAgentArrived(detourAgent, agent :Node3D):
 	print("Detour agent ", detourAgent, " arrived at ", detourAgent.target)
 	var player :AudioStreamPlayer3D = agent.get_node("AudioPlayer")
 	player.stream = SuccessSound
@@ -477,13 +471,13 @@ func onAgentArrived(detourAgent, agent :Spatial):
 # Below code is not a very good way to deal with this, a better way would be to increase the target distance with the number of reports coming in, or the number of agents blocking the way, etc.
 
 # Do something when an agent reports that it couldn't make progress towards its target
-func onAgentNoProgress(detourAgent, distanceLeft :float, agent :Spatial):
+func onAgentNoProgress(detourAgent, distanceLeft :float, agent :Node3D):
 	# print("Detour agent ", detourAgent, " reported progress problem. Distance left: ", distanceLeft)
 	if distanceLeft < 1.5 * agent.scale.x:
 		detourAgent.stop()
 
 # Do something when an agent reports that it didn't move in a second
-func onAgentNoMovement(detourAgent, distanceLeft :float, agent :Spatial):
+func onAgentNoMovement(detourAgent, distanceLeft :float, agent :Node3D):
 	# print("Detour agent ", detourAgent, " reported no movement. Distance left: ", distanceLeft)
 	if distanceLeft < 0.75 * agent.scale.x:
 		detourAgent.stop()
