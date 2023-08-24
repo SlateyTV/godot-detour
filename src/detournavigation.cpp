@@ -39,25 +39,25 @@ DetourNavigationParameters::_bind_methods()
 void
 DetourNavigation::_bind_methods()
 {
-//    register_method("initialize", &DetourNavigation::initialize);
-//    register_method("rebuildChangedTiles", &DetourNavigation::rebuildChangedTiles);
-//    register_method("markConvexArea", &DetourNavigation::markConvexArea);
-//    register_method("addAgent", &DetourNavigation::addAgent);
-//    register_method("removeAgent", &DetourNavigation::removeAgent);
-//    register_method("addBoxObstacle", &DetourNavigation::addBoxObstacle);
-//    register_method("addCylinderObstacle", &DetourNavigation::addCylinderObstacle);
-//    register_method("createDebugMesh", &DetourNavigation::createDebugMesh);
-//    register_method("setQueryFilter", &DetourNavigation::setQueryFilter);
-//    register_method("save", &DetourNavigation::save);
-//    register_method("load", &DetourNavigation::load);
-//    register_method("clear", &DetourNavigation::clear);
-//    register_method("getAgents", &DetourNavigation::getAgents);
-//    register_method("getObstacles", &DetourNavigation::getObstacles);
-//    register_method("getMarkedAreaIDs", &DetourNavigation::getMarkedAreaIDs);
-//    register_method("isInitialized", &DetourNavigation::isInitialized);
-//    register_method("addOffMeshConnection", &DetourNavigation::addOffMeshConnection);
-//    register_method("removeOffMeshConnection", &DetourNavigation::removeOffMeshConnection);
-//
+    ClassDB::bind_method(D_METHOD("initialize"), &DetourNavigation::initialize);
+    ClassDB::bind_method(D_METHOD("rebuild_changed_tiles"), &DetourNavigation::rebuildChangedTiles);
+    ClassDB::bind_method(D_METHOD("mark_convex_area"), &DetourNavigation::markConvexArea);
+    ClassDB::bind_method(D_METHOD("add_agent"), &DetourNavigation::addAgent);
+    ClassDB::bind_method(D_METHOD("remove_agent"), &DetourNavigation::removeAgent);
+    ClassDB::bind_method(D_METHOD("add_box_obstacle"), &DetourNavigation::addBoxObstacle);
+    ClassDB::bind_method(D_METHOD("add_cylinder_obstacle"), &DetourNavigation::addCylinderObstacle);
+    ClassDB::bind_method(D_METHOD("create_debug_mesh"), &DetourNavigation::createDebugMesh);
+    ClassDB::bind_method(D_METHOD("set_query_filter"), &DetourNavigation::setQueryFilter);
+    ClassDB::bind_method(D_METHOD("save"), &DetourNavigation::save);
+    ClassDB::bind_method(D_METHOD("load"), &DetourNavigation::load);
+    ClassDB::bind_method(D_METHOD("clear"), &DetourNavigation::clear);
+    ClassDB::bind_method(D_METHOD("get_agents"), &DetourNavigation::getAgents);
+    ClassDB::bind_method(D_METHOD("get_obstacles"), &DetourNavigation::getObstacles);
+    ClassDB::bind_method(D_METHOD("get_marked_area_ids"), &DetourNavigation::getMarkedAreaIDs);
+    ClassDB::bind_method(D_METHOD("is_initialized"), &DetourNavigation::isInitialized);
+    ClassDB::bind_method(D_METHOD("add_off_mesh_connection"), &DetourNavigation::addOffMeshConnection);
+    ClassDB::bind_method(D_METHOD("remove_off_mesh_connection"), &DetourNavigation::removeOffMeshConnection);
+
 //    register_signal<DetourNavigation>("navigation_tick_done", "executionTimeSeconds", Variant::INT);
 }
 

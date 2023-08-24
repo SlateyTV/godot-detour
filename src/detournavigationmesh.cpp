@@ -24,22 +24,52 @@ using namespace godot;
 void
 DetourNavigationMeshParameters::_bind_methods()
 {
-    ///TODO: SlateyDev READD
-//    register_property<DetourNavigationMeshParameters, Vector2>("cellSize", &DetourNavigationMeshParameters::cellSize, Vector2(0.0f, 0.0f));
-//    register_property<DetourNavigationMeshParameters, int>("maxNumAgents", &DetourNavigationMeshParameters::maxNumAgents, 256);
-//    register_property<DetourNavigationMeshParameters, float>("maxAgentSlope", &DetourNavigationMeshParameters::maxAgentSlope, 0.0f);
-//    register_property<DetourNavigationMeshParameters, float>("maxAgentHeight", &DetourNavigationMeshParameters::maxAgentHeight, 0.0f);
-//    register_property<DetourNavigationMeshParameters, float>("maxAgentClimb", &DetourNavigationMeshParameters::maxAgentClimb, 0.0f);
-//    register_property<DetourNavigationMeshParameters, float>("maxAgentRadius", &DetourNavigationMeshParameters::maxAgentRadius, 0.0f);
-//    register_property<DetourNavigationMeshParameters, float>("maxEdgeLength", &DetourNavigationMeshParameters::maxEdgeLength, 0.0f);
-//    register_property<DetourNavigationMeshParameters, float>("maxSimplificationError", &DetourNavigationMeshParameters::maxSimplificationError, 0.0f);
-//    register_property<DetourNavigationMeshParameters, int>("minNumCellsPerIsland", &DetourNavigationMeshParameters::minNumCellsPerIsland, 0);
-//    register_property<DetourNavigationMeshParameters, int>("minCellSpanCount", &DetourNavigationMeshParameters::minCellSpanCount, 0);
-//    register_property<DetourNavigationMeshParameters, int>("maxVertsPerPoly", &DetourNavigationMeshParameters::maxVertsPerPoly, 0);
-//    register_property<DetourNavigationMeshParameters, int>("tileSize", &DetourNavigationMeshParameters::tileSize, 0);
-//    register_property<DetourNavigationMeshParameters, int>("layersPerTile", &DetourNavigationMeshParameters::layersPerTile, 0);
-//    register_property<DetourNavigationMeshParameters, float>("detailSampleDistance", &DetourNavigationMeshParameters::detailSampleDistance, 0.0f);
-//    register_property<DetourNavigationMeshParameters, float>("detailSampleMaxError", &DetourNavigationMeshParameters::detailSampleMaxError, 0.0f);
+    ClassDB::bind_method(D_METHOD("set_cell_size", "size"), &DetourNavigationMeshParameters::set_cell_size);
+    ClassDB::bind_method(D_METHOD("get_cell_size"), &DetourNavigationMeshParameters::get_cell_size);
+    ClassDB::bind_method(D_METHOD("set_max_num_agents", "agents"), &DetourNavigationMeshParameters::set_max_num_agents);
+    ClassDB::bind_method(D_METHOD("get_max_num_agents"), &DetourNavigationMeshParameters::get_max_num_agents);
+    ClassDB::bind_method(D_METHOD("set_max_agent_slope", "size"), &DetourNavigationMeshParameters::set_cell_size);
+    ClassDB::bind_method(D_METHOD("get_max_agent_slope"), &DetourNavigationMeshParameters::get_cell_size);
+    ClassDB::bind_method(D_METHOD("set_max_agent_height", "agents"), &DetourNavigationMeshParameters::set_max_num_agents);
+    ClassDB::bind_method(D_METHOD("get_max_agent_height"), &DetourNavigationMeshParameters::get_max_num_agents);
+    ClassDB::bind_method(D_METHOD("set_max_agent_climb", "size"), &DetourNavigationMeshParameters::set_cell_size);
+    ClassDB::bind_method(D_METHOD("get_max_agent_climb"), &DetourNavigationMeshParameters::get_cell_size);
+    ClassDB::bind_method(D_METHOD("set_max_agent_radius", "agents"), &DetourNavigationMeshParameters::set_max_num_agents);
+    ClassDB::bind_method(D_METHOD("get_max_agent_radius"), &DetourNavigationMeshParameters::get_max_num_agents);
+    ClassDB::bind_method(D_METHOD("set_max_edge_length", "size"), &DetourNavigationMeshParameters::set_cell_size);
+    ClassDB::bind_method(D_METHOD("get_max_edge_length"), &DetourNavigationMeshParameters::get_cell_size);
+    ClassDB::bind_method(D_METHOD("set_max_simplification_error", "agents"), &DetourNavigationMeshParameters::set_max_num_agents);
+    ClassDB::bind_method(D_METHOD("get_max_simplification_error"), &DetourNavigationMeshParameters::get_max_num_agents);
+    ClassDB::bind_method(D_METHOD("set_min_num_cells_per_island", "size"), &DetourNavigationMeshParameters::set_cell_size);
+    ClassDB::bind_method(D_METHOD("get_min_num_cells_per_island"), &DetourNavigationMeshParameters::get_cell_size);
+    ClassDB::bind_method(D_METHOD("set_min_cell_span_count", "agents"), &DetourNavigationMeshParameters::set_max_num_agents);
+    ClassDB::bind_method(D_METHOD("get_min_cell_span_count"), &DetourNavigationMeshParameters::get_max_num_agents);
+    ClassDB::bind_method(D_METHOD("set_max_verts_per_poly", "size"), &DetourNavigationMeshParameters::set_cell_size);
+    ClassDB::bind_method(D_METHOD("get_max_verts_per_poly"), &DetourNavigationMeshParameters::get_cell_size);
+    ClassDB::bind_method(D_METHOD("set_tile_size", "agents"), &DetourNavigationMeshParameters::set_max_num_agents);
+    ClassDB::bind_method(D_METHOD("get_tile_size"), &DetourNavigationMeshParameters::get_max_num_agents);
+    ClassDB::bind_method(D_METHOD("set_layers_per_tile", "size"), &DetourNavigationMeshParameters::set_cell_size);
+    ClassDB::bind_method(D_METHOD("get_layers_per_tile"), &DetourNavigationMeshParameters::get_cell_size);
+    ClassDB::bind_method(D_METHOD("set_detail_sample_distance", "agents"), &DetourNavigationMeshParameters::set_max_num_agents);
+    ClassDB::bind_method(D_METHOD("get_detail_sample_distance"), &DetourNavigationMeshParameters::get_max_num_agents);
+    ClassDB::bind_method(D_METHOD("set_detail_sample_max_error", "agents"), &DetourNavigationMeshParameters::set_max_num_agents);
+    ClassDB::bind_method(D_METHOD("get_detail_sample_max_error"), &DetourNavigationMeshParameters::get_max_num_agents);
+
+    ADD_PROPERTY(PropertyInfo(Variant::VECTOR2, "size"), "set_cell_size", "get_cell_size");
+    ADD_PROPERTY(PropertyInfo(Variant::INT, "agents"), "set_max_num_agents", "get_max_num_agents");
+    ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "slope"), "set_max_agent_slope", "get_max_agent_slope");
+    ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "height"), "set_max_agent_height", "get_max_agent_height");
+    ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "climb"), "set_max_agent_climb", "get_max_agent_climb");
+    ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "radius"), "set_max_agent_radius", "get_max_agent_radius");
+    ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "length"), "set_max_edge_length", "get_max_edge_length");
+    ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "max_error"), "set_max_simplification_error", "get_max_simplification_error");
+    ADD_PROPERTY(PropertyInfo(Variant::INT, "cells"), "set_min_num_cells_per_island", "get_min_num_cells_per_island");
+    ADD_PROPERTY(PropertyInfo(Variant::INT, "count"), "set_min_cell_span_count", "get_min_cell_span_count");
+    ADD_PROPERTY(PropertyInfo(Variant::INT, "verts"), "set_max_verts_per_poly", "get_max_verts_per_poly");
+    ADD_PROPERTY(PropertyInfo(Variant::INT, "size"), "set_tile_size", "get_tile_size");
+    ADD_PROPERTY(PropertyInfo(Variant::INT, "layers"), "set_layers_per_tile", "get_layers_per_tile");
+    ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "distance"), "set_detail_sample_distance", "get_detail_sample_distance");
+    ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "max_error"), "set_detail_sample_max_error", "get_detail_sample_max_error");
 }
 
 void

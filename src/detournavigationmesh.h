@@ -61,6 +61,112 @@ namespace godot
         int         layersPerTile;          // How many vertical layers a single tile is expected to have. Should be less for "flat" levels, more for something like tall, multi-floored buildings.
         float       detailSampleDistance;   // The sampling distance to use when generating the detail mesh. [wu]
         float       detailSampleMaxError;   // The maximum allowed distance the detail mesh should deviate from the source data. [wu]
+
+    public:
+        void set_cell_size(Vector2 size) {
+            cellSize = size;
+        }
+        Vector2 get_cell_size() {
+            return cellSize;
+        }
+
+        void set_max_num_agents(int agents) {
+            maxNumAgents = agents;
+        }
+        int get_max_num_agents() {
+            return maxNumAgents;
+        }
+
+        void set_nax_agent_slope(float slope) {
+            maxAgentSlope = slope;
+        }
+        float get_max_agent_slope() {
+            return maxAgentSlope;
+        }
+
+        void set_max_agent_height(float height) {
+            maxAgentHeight = height;
+        }
+        float get_max_agent_height() {
+            return maxAgentHeight;
+        }
+
+        void set_max_agent_climb(float climb) {
+            maxAgentClimb = climb;
+        }
+        float get_max_agent_climb() {
+            return maxAgentClimb;
+        }
+
+        void set_max_agent_radius(float radius) {
+            maxAgentRadius = radius;
+        }
+        float get_max_agent_radius() {
+            return maxAgentRadius;
+        }
+
+        void set_max_edge_length(float length) {
+            maxEdgeLength = length;
+        }
+        float get_max_edge_length() {
+            return maxEdgeLength;
+        }
+
+        void set_max_simplification_error(float max_error) {
+            maxSimplificationError = max_error;
+        }
+        float get_max_simplification_error() {
+            return maxSimplificationError;
+        }
+
+        void set_min_num_cells_per_island(int cells) {
+            minNumCellsPerIsland = cells;
+        }
+        int get_min_num_cells_per_island() {
+            return minNumCellsPerIsland;
+        }
+
+        void set_min_cells_span_count(int count) {
+            minCellSpanCount = count;
+        }
+        int get_min_cells_span_count() {
+            return minCellSpanCount;
+        }
+
+        void set_max_verts_per_poly(int verts) {
+            maxVertsPerPoly = verts;
+        }
+        int get_max_verts_per_poly() {
+            return maxVertsPerPoly;
+        }
+
+        void set_tile_size(int size) {
+            tileSize = size;
+        }
+        int get_tile_size() {
+            return tileSize;
+        }
+
+        void set_layers_per_tile(int layers) {
+            layersPerTile = layers;
+        }
+        int get_layers_per_tile() {
+            return layersPerTile;
+        }
+
+        void set_detail_sample_distance(float distance) {
+            detailSampleDistance = distance;
+        }
+        float get_detail_sample_distance() {
+            return detailSampleDistance;
+        }
+
+        void set_detail_sample_max_error(float max_error) {
+            detailSampleMaxError = max_error;
+        }
+        float get_detail_sample_max_error() {
+            return detailSampleMaxError;
+        }
     };
 
     // Helper struct to store convex volume data
