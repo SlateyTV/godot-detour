@@ -1,11 +1,11 @@
 extends Camera3D
 
 # Exports
-@export (float, 0.0, 1.0) var sensitivity :float = 0.5
-@export (float, 0.001, 0.999) var mouseSmoothness :float = 0.7
-@export (float, 0.0, 10.0) var speed :float = 7.0
-@export (float, 0.0, 360.0) var yawLimit :float = 360.0
-@export (float, 0.0, 360.0) var pitchLimit :float = 360.0
+@export_range(0.0, 1.0, 0.01) var sensitivity :float = 0.5
+@export_range(0.001, 0.999, 0.001) var mouseSmoothness :float = 0.7
+@export_range(0.0, 10.0, 0.1) var speed :float = 7.0
+@export_range(0.0, 360.0, 1.0) var yawLimit :float = 360.0
+@export_range(0.0, 360.0, 1.0) var pitchLimit :float = 360.0
 
 # Private vars
 var _mousePos := Vector2(0.0, 0.0)

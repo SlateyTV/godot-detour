@@ -77,7 +77,7 @@ namespace godot
             return maxNumAgents;
         }
 
-        void set_nax_agent_slope(float slope) {
+        void set_max_agent_slope(float slope) {
             maxAgentSlope = slope;
         }
         float get_max_agent_slope() {

@@ -31,9 +31,9 @@ DetourNavigationParameters::_bind_methods()
     ClassDB::bind_method(D_METHOD("set_max_obstacles", "max"), &DetourNavigationParameters::set_max_obstacles);
     ClassDB::bind_method(D_METHOD("get_max_obstacles"), &DetourNavigationParameters::get_max_obstacles);
 
-    ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "params"), "set_nav_mesh_parameters", "get_nav_mesh_parameters");
-    ADD_PROPERTY(PropertyInfo(Variant::INT, "tps"), "set_ticks_per_second", "get_ticks_per_second");
-    ADD_PROPERTY(PropertyInfo(Variant::INT, "max"), "set_max_obstacles", "get_max_obstacles");
+    ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "nav_mesh_parameters"), "set_nav_mesh_parameters", "get_nav_mesh_parameters");
+    ADD_PROPERTY(PropertyInfo(Variant::INT, "ticks_per_second"), "set_ticks_per_second", "get_ticks_per_second");
+    ADD_PROPERTY(PropertyInfo(Variant::INT, "max_obstacles"), "set_max_obstacles", "get_max_obstacles");
 }
 
 void
@@ -74,8 +74,8 @@ DetourNavigation::DetourNavigation()
     , _navigationMutex(nullptr)
 {
     _navigationMutex = new std::mutex();
-    _recastContext = new RecastContext();
-    _inputGeometry = new DetourInputGeometry();
+    _recastContext = memnew(RecastContext);
+    _inputGeometry = memnew(DetourInputGeometry);
 }
 
 DetourNavigation::~DetourNavigation()
@@ -146,7 +146,7 @@ DetourNavigation::initialize(Variant inputMeshInstance, Ref<DetourNavigationPara
     for (int i = 0; i < parameters->navMeshParameters.size(); ++i)
     {
         Ref<DetourNavigationMeshParameters> navMeshParams = parameters->navMeshParameters[i];
-        DetourNavigationMesh* navMesh = new DetourNavigationMesh();
+        DetourNavigationMesh* navMesh = memnew(DetourNavigationMesh);
 
         if (!navMesh->initialize(_inputGeometry, navMeshParams, _maxObstacles, _recastContext, i))
         {
@@ -402,7 +402,7 @@ Ref<DetourCrowdAgent> DetourNavigation::addAgent(Ref<DetourCrowdAgentParameters>
     }
 
     // Create and add the agent as main
-    Ref<DetourCrowdAgent> agent = new DetourCrowdAgent();
+    Ref<DetourCrowdAgent> agent = memnew(DetourCrowdAgent);
     if (!navMesh->addAgent(agent, parameters))
     {
         ERR_PRINT("Unable to add agent.");
@@ -464,7 +464,7 @@ DetourNavigation::addCylinderObstacle(Vector3 position, float radius, float heig
     _navigationMutex->lock();
 
     // Create the obstacle
-    Ref<DetourObstacle> obstacle = new DetourObstacle();
+    Ref<DetourObstacle> obstacle = memnew(DetourObstacle);
     obstacle->initialize(OBSTACLE_TYPE_CYLINDER, position, Vector3(radius, height, 0.0f), 0.0f);
 
     // Add the obstacle to all navmeshes
@@ -484,7 +484,7 @@ DetourNavigation::addBoxObstacle(Vector3 position, Vector3 dimensions, float rot
     _navigationMutex->lock();
 
     // Create the obstacle
-    Ref<DetourObstacle> obstacle = new DetourObstacle();
+    Ref<DetourObstacle> obstacle = memnew(DetourObstacle);
     obstacle->initialize(OBSTACLE_TYPE_BOX, position, dimensions, rotationRad);
 
     // Add the obstacle to all navmeshes
@@ -513,7 +513,7 @@ DetourNavigation::createDebugMesh(int index, bool drawCacheBounds)
     // Create the debug drawing object if it doesn't exist yet
     if (!_debugDrawer)
     {
-        _debugDrawer = new GodotDetourDebugDraw();
+        _debugDrawer = memnew(GodotDetourDebugDraw);
     }
     //_debugDrawer->setMaterial(material);
 
@@ -525,7 +525,7 @@ DetourNavigation::createDebugMesh(int index, bool drawCacheBounds)
     navMesh->createDebugMesh(_debugDrawer, drawCacheBounds);
 
     // Add the result to the MeshInstance and return it
-    MeshInstance3D* meshInst = new MeshInstance3D();
+    MeshInstance3D* meshInst = memnew(MeshInstance3D);
     meshInst->set_mesh(_debugDrawer->getArrayMesh());
 
     _navigationMutex->unlock();
@@ -545,7 +545,7 @@ DetourNavigation::save(String path, bool compressed)
     // Open the file
     Ref<FileAccess> saveFile;
     Error result;
-    Ref<DirAccess> dir = new DirAccess();
+    Ref<DirAccess> dir = memnew(DirAccess);
     result = dir->make_dir_recursive(path.left(path.rfind("/")));
     if (result != Error::OK)
     {
@@ -693,7 +693,7 @@ DetourNavigation::load(String path, bool compressed)
         int numNavMeshes = saveFile->get_32();
         for (int i = 0; i < numNavMeshes; ++i)
         {
-            DetourNavigationMesh* navMesh = new DetourNavigationMesh();
+            DetourNavigationMesh* navMesh = memnew(DetourNavigationMesh);
             if (!navMesh->load(_inputGeometry, _recastContext, saveFile))
             {
                 ERR_PRINT("DTNavLoad: Unable to load navmesh.");
@@ -734,7 +734,7 @@ DetourNavigation::load(String path, bool compressed)
         int numAgents = saveFile->get_32();
         for (int i = 0; i < numAgents; ++i)
         {
-            Ref<DetourCrowdAgent> agent = new DetourCrowdAgent();
+            Ref<DetourCrowdAgent> agent = memnew(DetourCrowdAgent);
             if (!agent->load(saveFile))
             {
                 ERR_PRINT("DTNavLoad: Unable to load agent.");
@@ -742,7 +742,7 @@ DetourNavigation::load(String path, bool compressed)
             }
 
             // Load parameter values
-            Ref<DetourCrowdAgentParameters> params = new DetourCrowdAgentParameters();
+            Ref<DetourCrowdAgentParameters> params = memnew(DetourCrowdAgentParameters);
             if (!agent->loadParameterValues(params, saveFile))
             {
                 ERR_PRINT("DTNavLoad: Unable to load agent parameter values.");
@@ -774,7 +774,7 @@ DetourNavigation::load(String path, bool compressed)
         int numObstacles = saveFile->get_32();
         for (int i = 0; i < numObstacles; ++i)
         {
-            Ref<DetourObstacle> obstacle = new DetourObstacle();
+            Ref<DetourObstacle> obstacle = memnew(DetourObstacle);
             if (!obstacle->load(saveFile))
             {
                 ERR_PRINT(String("DTNavLoad: Unable to load obstacle {0}").format(Array::make(i)));
@@ -962,7 +962,8 @@ DetourNavigation::navigationThreadFunction()
         // Calculate how long the calculations took and emit the done signal
         auto timeTaken = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - start).count();
         lastExecutionTime = timeTaken / 1000.0;
-        emit_signal("navigation_tick_done", lastExecutionTime);
+
+        call_deferred("emit_signal", "navigation_tick_done", lastExecutionTime);
     }
     UtilityFunctions::print("DTNav: Navigation thread ended");
 }

@@ -54,6 +54,8 @@ private:
     godot::Ref<godot::SurfaceTool>      _surfaceTool;
     godot::Ref<godot::StandardMaterial3D>  _material;
     godot::Ref<godot::ArrayMesh>        _arrayMesh;
+
+    bool enabled = false;
 };
 
 //// INLINES

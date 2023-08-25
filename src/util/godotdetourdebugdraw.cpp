@@ -2,6 +2,7 @@
 #include <godot_cpp/classes/surface_tool.hpp>
 #include <godot_cpp/classes/mesh.hpp>
 #include <godot_cpp/classes/standard_material3d.hpp>
+#include <godot_cpp/variant/utility_functions.hpp>
 #include "navigationmeshhelpers.h"
 
 using namespace godot;
@@ -24,10 +25,11 @@ godotColorFromDetourColor(unsigned int input)
 
 GodotDetourDebugDraw::GodotDetourDebugDraw()
 {
-    _surfaceTool = (Ref<SurfaceTool>)new SurfaceTool();
+    enabled = false;
+    _surfaceTool = (Ref<SurfaceTool>)memnew(SurfaceTool);
 
     // Create the material
-    Ref<StandardMaterial3D> mat = new StandardMaterial3D();
+    Ref<StandardMaterial3D> mat = memnew(StandardMaterial3D);
     // mat->set_flag(StandardMaterial3D::FLAG_UNSHADED, true);
 	mat->set_shading_mode(StandardMaterial3D::SHADING_MODE_UNSHADED);
     mat->set_flag(StandardMaterial3D::FLAG_ALBEDO_FROM_VERTEX_COLOR, true);
@@ -156,6 +158,7 @@ GodotDetourDebugDraw::begin(duDebugDrawPrimitives prim, float size)
             _material->set_point_size(size * 1.5f);
             break;
         case DU_DRAW_LINES:
+            enabled = true;
             _surfaceTool->begin(Mesh::PRIMITIVE_LINES);
             // _material->set_line_width(size * 1.5f);
             break;
@@ -169,12 +172,13 @@ GodotDetourDebugDraw::begin(duDebugDrawPrimitives prim, float size)
     };
 
     // Set the material
-    _surfaceTool->set_material(_material->duplicate(true));
+//    _surfaceTool->set_material(_material->duplicate(true));
 }
 
 void
 GodotDetourDebugDraw::vertex(const float* pos, unsigned int color)
 {
+    if (!enabled) return;
     _surfaceTool->set_color(godotColorFromDetourColor(color));
     _surfaceTool->add_vertex(Vector3(pos[0], pos[1], pos[2]));
 }
@@ -182,6 +186,7 @@ GodotDetourDebugDraw::vertex(const float* pos, unsigned int color)
 void
 GodotDetourDebugDraw::vertex(const float x, const float y, const float z, unsigned int color)
 {
+    if (!enabled) return;
     _surfaceTool->set_color(godotColorFromDetourColor(color));
     _surfaceTool->add_vertex(Vector3(x, y, z));
 }
@@ -189,6 +194,7 @@ GodotDetourDebugDraw::vertex(const float x, const float y, const float z, unsign
 void
 GodotDetourDebugDraw::vertex(const float* pos, unsigned int color, const float* uv)
 {
+    if (!enabled) return;
     _surfaceTool->set_color(godotColorFromDetourColor(color));
     _surfaceTool->set_uv(Vector2(uv[0], uv[1]));
     _surfaceTool->add_vertex(Vector3(pos[0], pos[1], pos[2]));
@@ -197,6 +203,7 @@ GodotDetourDebugDraw::vertex(const float* pos, unsigned int color, const float* 
 void
 GodotDetourDebugDraw::vertex(const float x, const float y, const float z, unsigned int color, const float u, const float v)
 {
+    if (!enabled) return;
     _surfaceTool->set_color(godotColorFromDetourColor(color));
     _surfaceTool->set_uv(Vector2(u, v));
     _surfaceTool->add_vertex(Vector3(x, y, z));
@@ -205,5 +212,7 @@ GodotDetourDebugDraw::vertex(const float x, const float y, const float z, unsign
 void
 GodotDetourDebugDraw::end()
 {
+    if (!enabled) return;
+    enabled=false;
     _arrayMesh = _surfaceTool->commit(_arrayMesh);
 }

@@ -164,7 +164,7 @@ namespace godot
      */
     class DetourCrowdAgent : public RefCounted
     {
-        GDCLASS(DetourCrowdAgent, RefCounted);
+        GDCLASS(DetourCrowdAgent, RefCounted)
 
     public:
         static void _bind_methods();

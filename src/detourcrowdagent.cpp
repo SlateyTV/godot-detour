@@ -52,8 +52,8 @@ DetourCrowdAgentParameters::_bind_methods()
     ADD_PROPERTY(PropertyInfo(Variant::BOOL, "optimize_topology"), "set_optimize_topology", "get_optimize_topology");
     ADD_PROPERTY(PropertyInfo(Variant::BOOL, "avoid_obstacles"), "set_avoid_obstacles", "get_avoid_obstacles");
     ADD_PROPERTY(PropertyInfo(Variant::BOOL, "avoid_other_agents"), "set_avoid_other_agents", "get_avoid_other_agents");
-    ADD_PROPERTY(PropertyInfo(Variant::INT, "obstacle_avoidance"), "set_set_obstacle_avoidance", "get_obstacle_avoidance");
-    ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "separation_weight"), "set_set_separation_weight", "get_separation_weight");
+    ADD_PROPERTY(PropertyInfo(Variant::INT, "obstacle_avoidance"), "set_obstacle_avoidance", "get_obstacle_avoidance");
+    ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "separation_weight"), "set_separation_weight", "get_separation_weight");
 }
 
 void
@@ -68,7 +68,7 @@ DetourCrowdAgent::_bind_methods()
     ClassDB::bind_method(D_METHOD("set_velocity", "velocity"), &DetourCrowdAgent::set_velocity);
     ClassDB::bind_method(D_METHOD("get_velocity"), &DetourCrowdAgent::get_velocity);
     ClassDB::bind_method(D_METHOD("set_target_position", "position"), &DetourCrowdAgent::set_targetPosition);
-    ClassDB::bind_method(D_METHOD("get_target,position"), &DetourCrowdAgent::get_targetPosition);
+    ClassDB::bind_method(D_METHOD("get_target_position"), &DetourCrowdAgent::get_targetPosition);
     ClassDB::bind_method(D_METHOD("set_is_moving", "moving"), &DetourCrowdAgent::set_isMoving);
     ClassDB::bind_method(D_METHOD("get_is_moving"), &DetourCrowdAgent::get_isMoving);
 

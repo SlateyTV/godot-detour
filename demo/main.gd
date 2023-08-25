@@ -2,7 +2,7 @@ extends Node3D
 
 const SuccessSound :AudioStreamWAV = preload("res://sounds/success.wav")
 
-var navigation = null
+var navigation: DetourNavigation = null
 var testIndex :int = -1
 @onready var nextStepLbl : RichTextLabel = get_node("Control/NextStepLbl")
 var debugMeshInstance :MeshInstance3D = null
@@ -77,7 +77,7 @@ func doNextTest(index :int) -> void:
 	if index == 0:
 		nextStepLbl.text = "Initializing the navigation..."
 		await get_tree().process_frame
-		await initializeNavigation()
+		initializeNavigation()
 		nextStepLbl.text = "Next step:      Enable Navigation Debug Drawing"
 	if index == 1:
 		nextStepLbl.text = "Drawing debug mesh..."
@@ -90,11 +90,11 @@ func doNextTest(index :int) -> void:
 func initializeNavigation():
 	# Create the navigation parameters
 	var navParams = DetourNavigationParameters.new()
-	navParams.ticksPerSecond = 10 # How often the navigation is updated per second in its own thread, extra low to showcase prediction
-	navParams.maxObstacles = 256 # How many dynamic obstacles can be present at the same time
+	navParams.ticks_per_second = 10 # How often the navigation is updated per second in its own thread, extra low to showcase prediction
+	navParams.max_obstacles = 256 # How many dynamic obstacles can be present at the same time
 
 	# Create the parameters for the "small" navmesh
-	var navMeshParamsSmall = DetourNavigationMeshParameters.new()
+	var navMeshParamsSmall : DetourNavigationMeshParameters = DetourNavigationMeshParameters.new()
 	# It is important to understand that recast/detour operates on a voxel field internally.
 	# The size of a single voxel (often called cell internally) has significant influence on how a navigation mesh is created.
 	# A tile is a rectangular region within the navigation mesh. In other words, every navmesh is divided into equal-sized tiles, which are in turn divided into cells.
@@ -102,55 +102,55 @@ func initializeNavigation():
 	# Units are usually in world units [wu] (e.g. meters, or whatever you use), but some may be in voxel units [vx] (multiples of cellSize).
 
 	# x = width & depth of a single cell (only one value as both must be the same) | y = height of a single cell. [wu]
-	navMeshParamsSmall.cellSize = Vector2(0.15, 0.1)
+	navMeshParamsSmall.cell_size = Vector2(0.15, 0.1)
 	# The maximum number of agents that can be active on this navmesh
-	navMeshParamsSmall.maxNumAgents = 256
+	navMeshParamsSmall.max_num_agents = 256
 	# How steep an angle can be to still be considered walkable. In degree. Max 90.0.
-	navMeshParamsSmall.maxAgentSlope = 40.0
+	navMeshParamsSmall.max_agent_slope = 40.0
 	# The maximum height of an agent supported in this navigation mesh. [wu]
-	navMeshParamsSmall.maxAgentHeight = 2.0
+	navMeshParamsSmall.max_agent_height = 2.0
 	# How high a single "stair" can be to be considered walkable by an agent. [wu]
-	navMeshParamsSmall.maxAgentClimb = 0.75
+	navMeshParamsSmall.max_agent_climb = 0.75
 	# The maximum radius of an agent in this navigation mesh. [wu]
-	navMeshParamsSmall.maxAgentRadius = 0.5
+	navMeshParamsSmall.max_agent_radius = 0.5
 	# The maximum allowed length for contour edges along the border of the mesh. [wu]
-	navMeshParamsSmall.maxEdgeLength = 2.0
+	navMeshParamsSmall.max_edge_length = 2.0
 	# The maximum distance a simplified contour's border edges should deviate the original raw contour. [vx]
-	navMeshParamsSmall.maxSimplificationError = 1.3
+	navMeshParamsSmall.max_simplification_error = 1.3
 	# How many cells an isolated area must at least have to become part of the navmesh.
-	navMeshParamsSmall.minNumCellsPerIsland = 8
+	navMeshParamsSmall.min_num_cells_per_island = 8
 	# Any regions with a span count smaller than this value will, if possible, be merged with larger regions.
-	navMeshParamsSmall.minCellSpanCount = 20
+	navMeshParamsSmall.min_cell_span_count = 20
 	# Maximum number of vertices per polygon in the navigation mesh.
-	navMeshParamsSmall.maxVertsPerPoly = 6
+	navMeshParamsSmall.max_verts_per_poly = 6
 	# The width & depth of a single tile. [vx]
-	navMeshParamsSmall.tileSize = 42
+	navMeshParamsSmall.tile_size = 42
 	# How many vertical layers a single tile is expected to have. Should be less for "flat" levels, more for something like tall, multi-floored buildings.
-	navMeshParamsSmall.layersPerTile = 4
+	navMeshParamsSmall.layers_per_tile = 4
 	# The sampling distance to use when generating the detail mesh. [wu]
-	navMeshParamsSmall.detailSampleDistance = 6.0
+	navMeshParamsSmall.detail_sample_distance = 6.0
 	# The maximum allowed distance the detail mesh should deviate from the source data. [wu]
-	navMeshParamsSmall.detailSampleMaxError = 1.0
-	navParams.navMeshParameters.append(navMeshParamsSmall)
+	navMeshParamsSmall.detail_sample_max_error = 1.0
+	navParams.nav_mesh_parameters.append(navMeshParamsSmall)
 
 	# Create the parameters for the "large" navmesh
 	var navMeshParamsLarge = DetourNavigationMeshParameters.new()
-	navMeshParamsLarge.cellSize = Vector2(0.4, 0.28)
-	navMeshParamsLarge.maxNumAgents = 128
-	navMeshParamsLarge.maxAgentSlope = 45.0
-	navMeshParamsLarge.maxAgentHeight = 3.0
-	navMeshParamsLarge.maxAgentClimb = 1.0
-	navMeshParamsLarge.maxAgentRadius = 1.5
-	navMeshParamsLarge.maxEdgeLength = 12.0
-	navMeshParamsLarge.maxSimplificationError = 1.3
-	navMeshParamsLarge.minNumCellsPerIsland = 8
-	navMeshParamsLarge.minCellSpanCount = 20
-	navMeshParamsLarge.maxVertsPerPoly = 6
-	navMeshParamsLarge.tileSize = 42
-	navMeshParamsLarge.layersPerTile = 4
-	navMeshParamsLarge.detailSampleDistance = 6.0
-	navMeshParamsLarge.detailSampleMaxError = 1.0
-	navParams.navMeshParameters.append(navMeshParamsLarge)
+	navMeshParamsLarge.cell_size = Vector2(0.4, 0.28)
+	navMeshParamsLarge.max_num_agents = 128
+	navMeshParamsLarge.max_agent_slope = 45.0
+	navMeshParamsLarge.max_agent_height = 3.0
+	navMeshParamsLarge.max_agent_climb = 1.0
+	navMeshParamsLarge.max_agent_radius = 1.5    
+	navMeshParamsLarge.max_edge_length = 12.0   
+	navMeshParamsLarge.max_simplification_error = 1.3
+	navMeshParamsLarge.min_num_cells_per_island = 8
+	navMeshParamsLarge.min_cell_span_count = 20
+	navMeshParamsLarge.max_verts_per_poly = 6
+	navMeshParamsLarge.tile_size = 42
+	navMeshParamsLarge.layers_per_tile = 4
+	navMeshParamsLarge.detail_sample_distance = 6.0
+	navMeshParamsLarge.detail_sample_max_error = 1.0
+	navParams.nav_mesh_parameters.append(navMeshParamsLarge)
 
 	# Create the arrayMesh from the CSG and set it as the meshInstance's mesh
 	var csgCombiner :CSGShape3D = get_node("CSGCombiner3D")
@@ -170,7 +170,7 @@ func initializeNavigation():
 	vertices.append(Vector3(3.2, -0.5, 2.2))
 	vertices.append(Vector3(2.3, -0.5, -2.0))
 	vertices.append(Vector3(-1.2, -0.5, -3.1))
-	var markedAreaId = navigation.markConvexArea(vertices, 1.5, 4) # 4 = grass
+	var _markedAreaId = navigation.mark_convex_area(vertices, 1.5, 4) # 4 = grass
 
 	# Initialize the navigation with the mesh instance and the parameters
 	navigation.initialize(meshInstance, navParams)
@@ -183,24 +183,24 @@ func initializeNavigation():
 	weights[3] = 10.0		# Door
 	weights[4] = 150.0		# Grass
 	weights[5] = 150.0		# Jump
-	navigation.setQueryFilter(0, "default", weights)
+	navigation.set_query_filter(0, "default", weights)
 	weights[0] = 1.0
 	weights[1] = 1.0
 	weights[2] = 1.0
 	weights[3] = 1.0
 	weights[4] = 1.0
 	weights[5] = 1.0
-	navigation.setQueryFilter(1, "all-the-same", weights)
-	
+	navigation.set_query_filter(1, "all-the-same", weights)
 	# Wait until the first tick is done to add an off-mesh connection and rebuild
 	await navigation.navigation_tick_done
-	offMeshID = navigation.addOffMeshConnection($Portal1.position, $Portal2.position, true, 0.35, 0)
-	navigation.rebuildChangedTiles()
+	print($Portal1)
+	offMeshID = navigation.add_off_mesh_connection($Portal1.position, $Portal1.position, true, 0.35, 0)
+	navigation.rebuild_changed_tiles()
 
 # Draws and displays the debug mesh
 func drawDebugMesh() -> void:
 	# Don't do anything if navigation is not initialized
-	if not navigation.isInitialized():
+	if not navigation.is_initialized():
 		return
 	
 	# Free the old instance
@@ -210,7 +210,7 @@ func drawDebugMesh() -> void:
 		debugMeshInstance = null
 
 	# Create the debug mesh
-	debugMeshInstance = navigation.createDebugMesh(navMeshToDisplay, false)
+	debugMeshInstance = navigation.create_debug_mesh(navMeshToDisplay, false)
 	if !debugMeshInstance:
 		printerr("Debug meshInst invalid!")
 		return
@@ -223,7 +223,7 @@ func drawDebugMesh() -> void:
 
 
 # Called during physics process updates (doing creation/removal of obstacles and agents, etc.)
-func _physics_process(delta):
+func _physics_process(_delta):
 	if doPlaceRemoveObstacle == true or doMarkArea == true or doPlaceRemoveAgent == true or doSetTargetPosition == true:
 		var redrawDebugMesh :bool = false
 
@@ -260,7 +260,7 @@ func _physics_process(delta):
 				# Create an obstacle in GodotDetour and remember both
 				var targetPos :Vector3 = result.position
 				targetPos.y -= 0.2
-				var godotDetourObstacle = navigation.addCylinderObstacle(targetPos, 0.7, 2.0)
+				var godotDetourObstacle = navigation.add_cylinder_obstacle(targetPos, 0.7, 2.0)
 				obstacles[newObstacle] = godotDetourObstacle
 			# Otherwise, we hit an obstacle
 			else:
@@ -283,11 +283,11 @@ func _physics_process(delta):
 			vertices.append(targetPos + Vector3(randf_range(0.5, 2.0), -0.5, randf_range(-0.5, -2.0)))
 			vertices.append(targetPos + Vector3(randf_range(0.5, 2.0), -0.5, randf_range(0.5, 2.0)))
 			vertices.append(targetPos + Vector3(randf_range(-0.5, -2.0), -0.5, randf_range(0.5, 2.0)))
-			var markedAreaId = navigation.markConvexArea(vertices, 1.5, 2) # 2 = water
+			var _markedAreaId = navigation.mark_convex_area(vertices, 1.5, 2) # 2 = water
 
 			# Doing this right after marking a single area is not good for performance
 			# It is just done this way here for demo purposes
-			navigation.rebuildChangedTiles()
+			navigation.rebuild_changed_tiles()
 
 
 		# Place or remove an agent
@@ -303,33 +303,33 @@ func _physics_process(delta):
 				params.position = targetPos
 				params.radius = 0.3
 				params.height = 1.6
-				params.maxAcceleration = 6.0
-				params.maxSpeed = 3.0
-				params.filterName = "default"
+				params.max_acceleration = 6.0
+				params.max_speed = 3.0
+				params.filter_name = "default"
 				# Check more in-depth descriptions of the optimizations here:
 				# http://digestingduck.blogspot.com/2010/11/path-corridor-optimizations.html
 				# If this agent should anticipate turns and move accordingly.
-				params.anticipateTurns = true
+				params.anticipate_turns = true
 				# Optimize walked path based on visibility. Strongly recommended.
-				params.optimizeVisibility = true
+				params.optimize_visibility = true
 				# If shorter paths should be attempted under certain circumstances. Also recommended.
-				params.optimizeTopology = true
+				params.optimize_topology = true
 				# If this agent should try to avoid obstacles (dynamic obstacles).
-				params.avoidObstacles = true
+				params.avoid_obstacles = true
 				# If this agent should avoid other agents (will just walk through them if false)
-				params.avoidOtherAgents = true
+				params.avoid_other_agents = true
 				# How much this agent should avoid obstacles. 0 - 3, with 0 being low and 3 high avoidance.
-				params.obstacleAvoidance = 1
+				params.obstacle_avoidance = 1
 				# How strongly the other agents should try to avoid this agent (if they have avoidOtherAgents set).
-				params.separationWeight = 1.0
+				params.separation_weight = 1.0
 				# Change parameters slightly for the chubby agents
 				if shiftDown:
 					params.radius = 0.6
 					params.height = 2.0
-					params.separationWeight = 2.0
-					params.maxAcceleration = 5.0
-					params.maxSpeed = 2.0
-				var detourCrowdAgent = navigation.addAgent(params)
+					params.separation_weight = 2.0
+					params.max_acceleration = 5.0
+					params.max_speed = 2.0
+				var detourCrowdAgent : DetourCrowdAgent = navigation.add_agent(params)
 				if detourCrowdAgent == null:
 					print("Unable to place agent!")
 				else:
@@ -351,8 +351,8 @@ func _physics_process(delta):
 			else:
 				# Remove the agent
 				var agent :Node3D = result.collider.get_parent()
-				var detourCrowdAgent = agents[agent]
-				navigation.removeAgent(detourCrowdAgent) # This is important! Don't leave memory leaks
+				var detourCrowdAgent : DetourCrowdAgent = agents[agent]
+				navigation.remove_agent(detourCrowdAgent) # This is important! Don't leave memory leaks
 				agents.erase(agent)
 				remove_child(agent)
 				agent.queue_free()
@@ -361,8 +361,8 @@ func _physics_process(delta):
 		if doSetTargetPosition == true:
 			doSetTargetPosition = false
 			for agent in agents:
-				var detourCrowdAgent = agents[agent]
-				detourCrowdAgent.moveTowards(result.position)
+				var detourCrowdAgent : DetourCrowdAgent = agents[agent]
+				detourCrowdAgent.move_towards(result.position)
 
 		# Update the debug mesh after a bit (letting the navigation thread catch up)
 		if redrawDebugMesh == true:
@@ -411,9 +411,9 @@ func doSaveLoadRoutine():
 	navigation.load("user://navmeshes/stored_navmesh.dat", true)
 	
 	# Retrieve the lists of agents, marked areas and obstacles and restore our lists
-	var allAgents : Array = navigation.getAgents()
-	var allObstacles : Array = navigation.getObstacles()
-	var allMarkedAreaIDs : Array = navigation.getMarkedAreaIDs()
+	var allAgents : Array = navigation.get_agents()
+	var allObstacles : Array = navigation.get_obstacles()
+	var _allMarkedAreaIDs : Array = navigation.get_marked_area_ids()
 	
 	# Re-add agent representations
 	for detourCrowdAgent in allAgents:
@@ -432,7 +432,7 @@ func doSaveLoadRoutine():
 		add_child(newObstacle)
 		
 		# Create an obstacle in GodotDetour and remember both
-		var targetPos :Vector3 = detourObstacle.position
+		var _targetPos :Vector3 = detourObstacle.position
 		obstacles[newObstacle] = detourObstacle
 	
 	# Draw the debug mesh
@@ -445,13 +445,13 @@ func doSaveLoadRoutine():
 	$Control/TempLbl.text = ""
 	
 # Update function
-func _process(delta):
+func _process(_delta):
 	# Update the agents
 	for agent in agents:
-		var detourCrowdAgent = agents[agent]
-		if detourCrowdAgent.isMoving == true:
+		var detourCrowdAgent : DetourCrowdAgent = agents[agent]
+		if detourCrowdAgent.is_moving == true:
 			if usePrediction:
-				var result :Dictionary = detourCrowdAgent.getPredictedMovement(agent.position, -agent.global_transform.basis.z, lastUpdateTimestamp, deg_to_rad(2.5))
+				var result :Dictionary = detourCrowdAgent.get_predicted_movement(agent.position, -agent.global_transform.basis.z, lastUpdateTimestamp, deg_to_rad(2.5))
 				agent.position = result["position"]
 				agent.look_at(agent.position + result["direction"], agent.transform.basis.y)
 			else:
@@ -462,8 +462,8 @@ func _process(delta):
 	lastUpdateTimestamp = Time.get_ticks_msec()
 
 # Do something when an agent arrived
-func onAgentArrived(detourAgent, agent :Node3D):
-	print("Detour agent ", detourAgent, " arrived at ", detourAgent.target)
+func onAgentArrived(detourAgent : DetourCrowdAgent, agent :Node3D):
+	print("Detour agent ", detourAgent, " arrived at ", detourAgent.target_position)
 	var player :AudioStreamPlayer3D = agent.get_node("AudioPlayer")
 	player.stream = SuccessSound
 	player.play()

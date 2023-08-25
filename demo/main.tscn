@@ -209,3 +209,6 @@ mesh = SubResource("9")
 [node name="MeshInstance3" type="MeshInstance3D" parent="Agent"]
 transform = Transform3D(-0.0268226, 0.00650759, 0.999619, -0.99964, -0.000174613, -0.026822, 0, -0.999979, 0.00650993, 0, 2.90269, -0.403509)
 mesh = SubResource("10")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.868623, 0.495474, 0, -0.495474, 0.868623, 0, 12.7272, 0)
