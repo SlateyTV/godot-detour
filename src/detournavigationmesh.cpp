@@ -100,6 +100,7 @@ DetourNavigationMesh::DetourNavigationMesh()
     , _tileSize(0)
     , _layersPerTile(4)
     , _navMeshIndex(0)
+    , _maxAgents(256)
 {
     _rcConfig = new rcConfig();
     _navQuery = dtAllocNavMeshQuery();
@@ -294,7 +295,7 @@ DetourNavigationMesh::initialize(DetourInputGeometry* inputGeom, Ref<DetourNavig
             status = _tileCache->buildNavMeshTilesAt(x, y, _navMesh);
             if (dtStatusFailed(status))
             {
-                ERR_PRINT(String("DTNavMeshInitialize: Could not build nav mesh tiles at {0} {1}").format(Array::make(x, y)));
+                ERR_PRINT(String("DTNavMeshInitialize: Could not build nav mesh tiles at {0} {1} - {2}").format(Array::make(x, y, status)));
                 return false;
             }
         }
@@ -582,21 +583,6 @@ DetourNavigationMesh::load(DetourInputGeometry* inputGeom, RecastContext* recast
     }
 
     return true;
-}
-
-static int
-pointInPoly(int nvert, const float* verts, const float* p)
-{
-    int i, j, c = 0;
-    for (i = 0, j = nvert-1; i < nvert; j = i++)
-    {
-        const float* vi = &verts[i*3];
-        const float* vj = &verts[j*3];
-        if (((vi[2] > p[2]) != (vj[2] > p[2])) &&
-            (p[0] < (vj[0]-vi[0]) * (p[2]-vi[2]) / (vj[2]-vi[2]) + vi[0]) )
-            c = !c;
-    }
-    return c;
 }
 
 struct ChangedPosData

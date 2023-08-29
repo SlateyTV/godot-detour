@@ -11,7 +11,6 @@ class dtTileCache;
 class dtNavMesh;
 class dtNavMeshQuery;
 class dtCrowd;
-class rcConfig;
 class RecastContext;
 class GodotDetourDebugDraw;
 struct MeshProcess;

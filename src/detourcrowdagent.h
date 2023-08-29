@@ -7,7 +7,7 @@
 #include <chrono>
 #include <godot_cpp/classes/ref_counted.hpp>
 
-class dtCrowdAgent;
+struct dtCrowdAgent;
 class dtCrowd;
 class dtNavMeshQuery;
 class dtQueryFilter;

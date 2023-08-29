@@ -229,10 +229,8 @@ DetourInputGeometry::save(Ref<FileAccess> targetFile)
             rcChunkyTriMeshNode& node = m_chunkyMesh->nodes[i];
             targetFile->store_float(node.bmin[0]);
             targetFile->store_float(node.bmin[1]);
-            targetFile->store_float(node.bmin[2]);
             targetFile->store_float(node.bmax[0]);
             targetFile->store_float(node.bmax[1]);
-            targetFile->store_float(node.bmax[2]);
             targetFile->store_32(node.i);
             targetFile->store_32(node.n);
         }
@@ -341,10 +339,8 @@ DetourInputGeometry::load(Ref<FileAccess> sourceFile)
                 rcChunkyTriMeshNode& node = m_chunkyMesh->nodes[i];
                 node.bmin[0] = sourceFile->get_float();
                 node.bmin[1] = sourceFile->get_float();
-                node.bmin[2] = sourceFile->get_float();
                 node.bmax[0] = sourceFile->get_float();
                 node.bmax[1] = sourceFile->get_float();
-                node.bmax[2] = sourceFile->get_float();
                 node.i = sourceFile->get_32();
                 node.n = sourceFile->get_32();
             }

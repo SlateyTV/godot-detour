@@ -507,6 +507,7 @@ DetourNavigation::createDebugMesh(int index, bool drawCacheBounds)
     if (index > _navMeshes.size() - 1)
     {
         ERR_PRINT(String("Index higher than number of available navMeshes: {0} {1}").format(Array::make(index, _navMeshes.size())));
+        _navigationMutex->unlock();
         return nullptr;
     }
 
@@ -576,6 +577,7 @@ DetourNavigation::save(String path, bool compressed)
     if (!_inputGeometry->save(saveFile))
     {
         ERR_PRINT("DTNavSave: Unable to save input geometry.");
+        _navigationMutex->unlock();
         return false;
     }
 
@@ -586,6 +588,7 @@ DetourNavigation::save(String path, bool compressed)
         if (!_navMeshes[i]->save(saveFile))
         {
             ERR_PRINT(String("DTNavSave: Unable to save nav mesh {0}").format(Array::make(i)));
+            _navigationMutex->unlock();
             return false;
         }
     }
@@ -614,6 +617,7 @@ DetourNavigation::save(String path, bool compressed)
         if (!_agents[i]->save(saveFile))
         {
             ERR_PRINT(String("DTNavSave: Unable to save nav agent {0}").format(Array::make(i)));
+            _navigationMutex->unlock();
             return false;
         }
     }
@@ -625,6 +629,7 @@ DetourNavigation::save(String path, bool compressed)
         if (!_obstacles[i]->save(saveFile))
         {
             ERR_PRINT(String("DTNavSave: Unable to save obstacle {0}").format(Array::make(i)));
+            _navigationMutex->unlock();
             return false;
         }
     }
