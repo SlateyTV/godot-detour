@@ -194,13 +194,9 @@ namespace godot
     /**
      * @brief Representation of a single TileMesh and Crowd.
      */
-    class DetourNavigationMesh : public RefCounted
+    class DetourNavigationMesh
     {
-        GDCLASS(DetourNavigationMesh, RefCounted)
-
     public:
-        static void _bind_methods();
-
         /**
          * @brief Destructor.
          */
@@ -210,11 +206,6 @@ namespace godot
          * @brief Destructor.
          */
         ~DetourNavigationMesh();
-
-        /**
-         * @brief Called when .new() is called in gdscript
-         */
-        void _init() {}
 
         /**
          * @brief initialize    Initializes the navigation mesh & crowd.

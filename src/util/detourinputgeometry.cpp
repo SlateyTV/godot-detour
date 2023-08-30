@@ -22,11 +22,7 @@
 
 
 #define _USE_MATH_DEFINES
-#include <math.h>
-#include <stdio.h>
-#include <ctype.h>
-#include <string.h>
-#include <algorithm>
+#include <cstring>
 #include <godot_cpp/classes/mesh_data_tool.hpp>
 #include <godot_cpp/classes/array_mesh.hpp>
 #include <godot_cpp/classes/file_access.hpp>
@@ -35,9 +31,6 @@
 #include "chunkytrimesh.h"
 #include "meshdataaccumulator.h"
 #include "DebugDraw.h"
-#include "RecastDebugDraw.h"
-#include "DetourNavMesh.h"
-// #include "Sample.h"
 
 using namespace godot;
 

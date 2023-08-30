@@ -6,20 +6,8 @@
 #include <godot_cpp/classes/array_mesh.hpp>
 #include <godot_cpp/classes/primitive_mesh.hpp>
 #include <godot_cpp/classes/static_body3d.hpp>
-#include <godot_cpp/classes/box_shape3d.hpp>
 #include <godot_cpp/classes/node3d.hpp>
-#include <godot_cpp/classes/cylinder_shape3d.hpp>
-#include <godot_cpp/classes/collision_shape3d.hpp>
-#include <godot_cpp/classes/box_mesh.hpp>
-#include <godot_cpp/classes/capsule_shape3d.hpp>
-#include <godot_cpp/classes/capsule_mesh.hpp>
-#include <godot_cpp/classes/cylinder_mesh.hpp>
-#include <godot_cpp/classes/sphere_shape3d.hpp>
-#include <godot_cpp/classes/sphere_mesh.hpp>
 #include <godot_cpp/classes/geometry3d.hpp>
-#include <godot_cpp/classes/grid_map.hpp>
-#include <godot_cpp/classes/concave_polygon_shape3d.hpp>
-#include <godot_cpp/classes/convex_polygon_shape3d.hpp>
 
 using namespace godot;
 
@@ -41,8 +29,6 @@ GodotGeometryParser::getNodeVerticesAndIndices(godot::MeshInstance3D* meshInstan
 void
 GodotGeometryParser::addMesh(const Ref<ArrayMesh>& p_mesh, const Transform3D& p_xform, std::vector<float>& p_vertices, std::vector<int>& p_indices)
 {
-    int current_vertex_count = 0;
-
     // Reserve indices & vertices to avoid dynamic allocation
     size_t vertexCount = 0;
     size_t faceCount = 0;
@@ -76,7 +62,7 @@ GodotGeometryParser::addMesh(const Ref<ArrayMesh>& p_mesh, const Transform3D& p_
     p_indices.reserve(faceCount * 3);
 
     for (int i = 0; i < p_mesh->get_surface_count(); i++) {
-        current_vertex_count = p_vertices.size() / 3;
+        int current_vertex_count = p_vertices.size() / 3;
 
         if (p_mesh->surface_get_primitive_type(i) != Mesh::PRIMITIVE_TRIANGLES)
         {
@@ -84,12 +70,13 @@ GodotGeometryParser::addMesh(const Ref<ArrayMesh>& p_mesh, const Transform3D& p_
             continue;
         }
 
-        int index_count = 0;
+        int index_count;
         if (p_mesh->surface_get_format(i) & Mesh::ARRAY_FORMAT_INDEX)
         {
             index_count = p_mesh->surface_get_array_index_len(i);
         }
-        else {
+        else
+        {
             index_count = p_mesh->surface_get_array_len(i);
         }
 
@@ -100,13 +87,10 @@ GodotGeometryParser::addMesh(const Ref<ArrayMesh>& p_mesh, const Transform3D& p_
         Array a = p_mesh->surface_get_arrays(i);
 
         PackedVector3Array mesh_vertices = a[Mesh::ARRAY_VERTEX];
-//        PackedVector3Array vr = mesh_vertices.read();
 
         if (p_mesh->surface_get_format(i) & Mesh::ARRAY_FORMAT_INDEX)
         {
-
             PackedInt32Array mesh_indices = a[Mesh::ARRAY_INDEX];
-//            PackedIntArray ir = mesh_indices.read();
 
             for (int j = 0; j < mesh_vertices.size(); j++)
             {
@@ -138,7 +122,7 @@ GodotGeometryParser::addMesh(const Ref<ArrayMesh>& p_mesh, const Transform3D& p_
 }
 
 void
-GodotGeometryParser::parseGeometry(godot::MeshInstance3D* meshInstance, std::vector<float> &p_vertices, std::vector<int> &p_indices)
+GodotGeometryParser::parseGeometry(MeshInstance3D* meshInstance, std::vector<float> &p_vertices, std::vector<int> &p_indices)
 {
     Ref<ArrayMesh> mesh = meshInstance->get_mesh();
     if (mesh.is_valid())

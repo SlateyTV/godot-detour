@@ -1,7 +1,6 @@
 #ifndef GDGEOMETRYPARSER_H
 #define GDGEOMETRYPARSER_H
 
-#include <godot_cpp/variant/builtin_types.hpp>
 #include <godot_cpp/classes/mesh_instance3d.hpp>
 #include <godot_cpp/classes/array_mesh.hpp>
 #include <vector>

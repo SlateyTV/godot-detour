@@ -9,7 +9,6 @@
 #include <DetourNavMeshBuilder.h>
 #include <DetourDebugDraw.h>
 #include <DetourCrowd.h>
-#include <climits>
 #include "util/detourinputgeometry.h"
 #include "util/recastcontext.h"
 #include "util/navigationmeshhelpers.h"
@@ -70,12 +69,6 @@ DetourNavigationMeshParameters::_bind_methods()
     ADD_PROPERTY(PropertyInfo(Variant::INT, "layers_per_tile"), "set_layers_per_tile", "get_layers_per_tile");
     ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "detail_sample_distance"), "set_detail_sample_distance", "get_detail_sample_distance");
     ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "detail_sample_max_error"), "set_detail_sample_max_error", "get_detail_sample_max_error");
-}
-
-void
-DetourNavigationMesh::_bind_methods()
-{
-    // TODO: Do we really need to expose this class to GDScript?
 }
 
 DetourNavigationMesh::DetourNavigationMesh()

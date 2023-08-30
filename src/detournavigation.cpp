@@ -74,8 +74,8 @@ DetourNavigation::DetourNavigation()
     , _navigationMutex(nullptr)
 {
     _navigationMutex = new std::mutex();
-    _recastContext = memnew(RecastContext);
-    _inputGeometry = memnew(DetourInputGeometry);
+    _recastContext = new RecastContext();
+    _inputGeometry = new DetourInputGeometry();
 }
 
 DetourNavigation::~DetourNavigation()
@@ -91,17 +91,13 @@ DetourNavigation::~DetourNavigation()
     }
     delete _navigationMutex;
 
-    for (int i = 0; i < _navMeshes.size(); ++i)
+    for (const auto& _navMesh : _navMeshes)
     {
-        delete _navMeshes[i];
+        delete _navMesh;
     }
     _navMeshes.clear();
 
-    if (_debugDrawer)
-    {
-        delete _debugDrawer;
-    }
-
+    delete _debugDrawer;
     delete _inputGeometry;
     delete _recastContext;
 }
@@ -146,7 +142,7 @@ DetourNavigation::initialize(Variant inputMeshInstance, Ref<DetourNavigationPara
     for (int i = 0; i < parameters->navMeshParameters.size(); ++i)
     {
         Ref<DetourNavigationMeshParameters> navMeshParams = parameters->navMeshParameters[i];
-        DetourNavigationMesh* navMesh = memnew(DetourNavigationMesh);
+        DetourNavigationMesh* navMesh = new DetourNavigationMesh();
 
         if (!navMesh->initialize(_inputGeometry, navMeshParams, _maxObstacles, _recastContext, i))
         {
@@ -514,7 +510,7 @@ DetourNavigation::createDebugMesh(int index, bool drawCacheBounds)
     // Create the debug drawing object if it doesn't exist yet
     if (!_debugDrawer)
     {
-        _debugDrawer = memnew(GodotDetourDebugDraw);
+        _debugDrawer = new GodotDetourDebugDraw();
     }
     //_debugDrawer->setMaterial(material);
 

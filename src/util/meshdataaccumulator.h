@@ -3,7 +3,6 @@
 
 #include <vector>
 #include <godot_cpp/classes/array_mesh.hpp>
-#include <godot_cpp/variant/builtin_types.hpp>
 #include <godot_cpp/classes/mesh_instance3d.hpp>
 #include <godot_cpp/classes/file_access.hpp>
 

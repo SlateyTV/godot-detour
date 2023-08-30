@@ -1,7 +1,6 @@
 #include "meshdataaccumulator.h"
 
 #include <godot_cpp/classes/mesh_data_tool.hpp>
-#include <godot_cpp/classes/mesh.hpp>
 #include <godot_cpp/classes/material.hpp>
 #include <godot_cpp/classes/file_access.hpp>
 #include <godot_cpp/variant/utility_functions.hpp>
