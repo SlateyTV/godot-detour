@@ -142,7 +142,7 @@ DetourNavigation::initialize(Variant inputMeshInstance, Ref<DetourNavigationPara
     for (int i = 0; i < parameters->navMeshParameters.size(); ++i)
     {
         Ref<DetourNavigationMeshParameters> navMeshParams = parameters->navMeshParameters[i];
-        DetourNavigationMesh* navMesh = new DetourNavigationMesh();
+        auto* navMesh = new DetourNavigationMesh();
 
         if (!navMesh->initialize(_inputGeometry, navMeshParams, _maxObstacles, _recastContext, i))
         {

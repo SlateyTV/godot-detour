@@ -1,8 +1,10 @@
 #ifndef NAVIGATIONMESHHELPERS_H
 #define NAVIGATIONMESHHELPERS_H
 
+#include <DetourCommon.h>
 #include <DetourTileCache.h>
 #include <DetourTileCacheBuilder.h>
+#include "fastlz.h"
 
 class DetourInputGeometry;
 struct rcHeightfield;
